@@ -1,8 +1,22 @@
-turtles-own
+breed [people person]
+breed [vertices vertex]
+undirected-link-breed [contacts contact]
+
+people-own
   [ sick?                ;; if true, the turtle is infectious
     remaining-immunity   ;; how many weeks of immunity the turtle has left
     sick-time            ;; how long, in weeks, the turtle has been infectious
-    age ]                ;; how many weeks old the turtle is
+    age                  ;; how many weeks old the turtle is
+    ;contacts
+    degree-centrality
+    q-days ]
+
+contacts-own [
+  contact-age
+]
+
+vertices-own
+  [ ref-pers ]
 
 globals
   [ %infected            ;; what % of the population is infectious
@@ -10,7 +24,20 @@ globals
     lifespan             ;; the lifespan of a turtle
     chance-reproduce     ;; the probability of a turtle generating an offspring each tick
     carrying-capacity    ;; the number of turtles that can be in the world at one time
-    immunity-duration ]  ;; how many weeks immunity lasts
+    immunity-duration    ;; how many weeks immunity lasts
+    dead-people
+    new-people
+    avg-degree-centrality
+    std-dev-degree-centrality
+  ]
+
+to reset
+  set number-people 150
+  set infectiousness 65
+  set chance-recover 75
+  set duration 20
+  set contact-time 20
+end
 
 ;; The setup is divided into four procedures
 to setup
@@ -19,20 +46,42 @@ to setup
   setup-turtles
   update-global-variables
   update-display
+
+  set dead-people (list)
+  set new-people (list)
+
   reset-ticks
 end
 
 ;; We create a variable number of turtles of which 10 are infectious,
 ;; and distribute them randomly
 to setup-turtles
-  create-turtles number-people
+  create-people number-people
     [ setxy random-xcor random-ycor
+      ;setxy ((random-xcor / 2) - (max-pxcor / 2)) random-ycor
       set age random lifespan
       set sick-time 0
       set remaining-immunity 0
       set size 1.5  ;; easier to see
+      ;set contacts (list)
+      set q-days 0
+      set degree-centrality 0
       get-healthy ]
-  ask n-of 10 turtles
+
+  let id-person (list)
+  ask people [
+    set id-person lput who id-person
+  ]
+
+  ;foreach id-person [ id -> create-vertices 1 [
+  ;  setxy ((random-xcor / 2) + (max-pxcor / 2)) random-ycor
+  ;  set size 0.5
+  ;  set shape "circle"
+  ;  set ref-pers id
+  ;  ]
+  ;]
+
+  ask n-of 10 people
     [ get-sick ]
 end
 
@@ -62,27 +111,95 @@ to setup-constants
 end
 
 to go
-  ask turtles [
+  ask people [
     get-older
     move
     if sick? [ recover-or-die ]
     ifelse sick? [ infect ] [ reproduce ]
+    update-contacts
+    if q-days > 0 [set q-days q-days - 1]
   ]
+
+  ask contacts [
+    set contact-age contact-age + 1
+    if contact-age > contact-time [die]
+  ]
+
   update-global-variables
+  update-metrics
   update-display
+
+  ; sync-graph
+  ; check-contact-graph
+  ; layout-turtles
+
   tick
 end
 
+to update-metrics
+  let sum-degree-centrality 0
+  let sum-std-dev-degree-centrality 0
+  ask people [
+    set degree-centrality count my-links
+    set sum-degree-centrality sum-degree-centrality + degree-centrality
+  ]
+  set avg-degree-centrality sum-degree-centrality / count people
+  ask people [
+    set sum-std-dev-degree-centrality sum-std-dev-degree-centrality + (degree-centrality - avg-degree-centrality) ^ 2
+  ]
+  set std-dev-degree-centrality sqrt (sum-std-dev-degree-centrality / count people)
+end
+
+to update-contacts
+  let contact-p other people-here
+  create-contacts-with other people-here
+  ask people-here [
+    ;ask contacts myself self
+  ]
+  let contact-list (list)
+  ask contact-p [
+    set contact-list lput who contact-list
+  ]
+  ;; show word "My contacts are " contacts
+  ;; show word "Checking contacts with " contact-list
+  ;foreach contact-list [ id ->
+  ;  set contacts filter [ s -> first s != id ] contacts
+  ;  set contacts lput (list id ticks) contacts
+  ;]
+end
+
+to sync-graph
+  ;; show word "All death list " dead-people
+  ;; show word "All new list " new-people
+
+  foreach dead-people [id -> ask vertices with [ref-pers = id] [die]]
+  foreach new-people [id -> create-vertices 1 [
+    setxy ((random-xcor / 2) + (max-pxcor / 2)) random-ycor
+    set size 0.5
+    set shape "circle"
+    set ref-pers id
+    ]
+  ]
+
+end
+
 to update-global-variables
-  if count turtles > 0
-    [ set %infected (count turtles with [ sick? ] / count turtles) * 100
-      set %immune (count turtles with [ immune? ] / count turtles) * 100 ]
+  if count people > 0
+    [ set %infected (count people with [ sick? ] / count people) * 100
+      set %immune (count people with [ immune? ] / count people) * 100 ]
 end
 
 to update-display
-  ask turtles
+  let maxdc (max [degree-centrality] of people)
+  show maxdc
+  ask people
     [ if shape != turtle-shape [ set shape turtle-shape ]
-      set color ifelse-value sick? [ red ] [ ifelse-value immune? [ grey ] [ green ] ] ]
+      set color ifelse-value (turtle-color = "health status") [
+        ifelse-value sick? [ red ] [
+          ifelse-value immune? [ white ] [ green ]
+        ]
+      ] [ ifelse-value (degree-centrality > 0) [scale-color red degree-centrality 0 maxdc] [gray] ]
+    ]
 end
 
 ;;Turtle counting variables are advanced.
@@ -100,12 +217,15 @@ to move ;; turtle procedure
   rt random 100
   lt random 100
   fd 1
+  ;let destination patch-ahead 1
+  ;let this-person self
+  ;ifelse [pxcor] of destination > 0 [ask this-person [setxy (- max-pxcor / 2) ycor]] [fd 1]
 end
 
 ;; If a turtle is sick, it infects other turtles on the same patch.
 ;; Immune turtles don't get sick.
 to infect ;; turtle procedure
-  ask other turtles-here with [ not sick? and not immune? ]
+  ask other people-here with [ not sick? and not immune? ]
     [ if random-float 100 < infectiousness
       [ get-sick ] ]
 end
@@ -122,7 +242,7 @@ end
 ;; If there are less turtles than the carrying-capacity
 ;; then turtles can reproduce.
 to reproduce
-  if count turtles < carrying-capacity and random-float 100 < chance-reproduce
+  if count people < carrying-capacity and random-float 100 < chance-reproduce
     [ hatch 1
       [ set age 1
         lt 45 fd 1
@@ -170,9 +290,9 @@ ticks
 
 SLIDER
 40
-155
+205
 234
-188
+238
 duration
 duration
 0.0
@@ -185,9 +305,9 @@ HORIZONTAL
 
 SLIDER
 40
-121
+171
 234
-154
+204
 chance-recover
 chance-recover
 0.0
@@ -200,9 +320,9 @@ HORIZONTAL
 
 SLIDER
 40
-87
+137
 234
-120
+170
 infectiousness
 infectiousness
 0.0
@@ -214,10 +334,10 @@ infectiousness
 HORIZONTAL
 
 BUTTON
-62
-48
-132
-83
+140
+55
+210
+90
 NIL
 setup
 NIL
@@ -231,10 +351,10 @@ NIL
 1
 
 BUTTON
-138
-48
-209
-84
+140
+95
+211
+131
 NIL
 go
 T
@@ -248,10 +368,10 @@ NIL
 0
 
 PLOT
-15
-375
-267
-539
+10
+425
+262
+589
 Populations
 weeks
 people
@@ -263,10 +383,10 @@ true
 true
 "" ""
 PENS
-"sick" 1.0 0 -2674135 true "" "plot count turtles with [ sick? ]"
-"immune" 1.0 0 -7500403 true "" "plot count turtles with [ immune? ]"
-"healthy" 1.0 0 -10899396 true "" "plot count turtles with [ not sick? and not immune? ]"
-"total" 1.0 0 -13345367 true "" "plot count turtles"
+"sick" 1.0 0 -2674135 true "" "plot count people with [ sick? ]"
+"immune" 1.0 0 -7500403 true "" "plot count people with [ immune? ]"
+"healthy" 1.0 0 -10899396 true "" "plot count people with [ not sick? and not immune? ]"
+"total" 1.0 0 -13345367 true "" "plot count people"
 
 SLIDER
 40
@@ -284,10 +404,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-28
-328
-103
-373
+13
+378
+98
+423
 NIL
 %infected
 1
@@ -295,10 +415,10 @@ NIL
 11
 
 MONITOR
-105
-328
-179
-373
+100
+378
+174
+423
 NIL
 %immune
 1
@@ -307,9 +427,9 @@ NIL
 
 MONITOR
 181
-329
-255
-374
+379
+261
+424
 years
 ticks / 52
 1
@@ -317,13 +437,113 @@ ticks / 52
 11
 
 CHOOSER
-65
-195
-210
-240
+40
+275
+235
+320
 turtle-shape
 turtle-shape
 "person" "circle"
+0
+
+BUTTON
+60
+55
+130
+90
+NIL
+reset
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+60
+95
+130
+130
+go once
+go
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+SLIDER
+40
+240
+235
+273
+contact-time
+contact-time
+0
+100
+20.0
+1
+1
+NIL
+HORIZONTAL
+
+PLOT
+785
+100
+985
+250
+Degree centrality
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"Average" 1.0 0 -16777216 true "" "plot avg-degree-centrality"
+"Std. dev." 1.0 0 -7500403 true "" "plot std-dev-degree-centrality"
+
+MONITOR
+785
+10
+985
+55
+Average degree centrality
+avg-degree-centrality
+1
+1
+11
+
+MONITOR
+785
+55
+985
+100
+Std. dev. of degree centrality
+std-dev-degree-centrality
+1
+1
+11
+
+CHOOSER
+40
+325
+235
+370
+turtle-color
+turtle-color
+"health status" "degree centrality"
 0
 
 @#$#@#$#@
