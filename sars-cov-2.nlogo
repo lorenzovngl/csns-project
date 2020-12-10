@@ -37,6 +37,8 @@ to reset
   set chance-recover 75
   set duration 20
   set contact-time 20
+  set social-distance false
+  set social-distance-perfection-rate 70
 end
 
 ;; The setup is divided into four procedures
@@ -148,6 +150,8 @@ to update-metrics
     set sum-std-dev-degree-centrality sum-std-dev-degree-centrality + (degree-centrality - avg-degree-centrality) ^ 2
   ]
   set std-dev-degree-centrality sqrt (sum-std-dev-degree-centrality / count people)
+
+
 end
 
 to update-contacts
@@ -216,7 +220,24 @@ end
 to move ;; turtle procedure
   rt random 100
   lt random 100
-  fd 1
+  let not-move-probability 10
+
+  if q-days = 0 [
+    if random-float 100 > not-move-probability [
+      ifelse not social-distance [
+        fd 1
+      ] [
+        let busy-patch false
+        ask patch-ahead 1 [
+          if count people-here > 0 [ set busy-patch true ]
+        ]
+        if not busy-patch or random-float 100 > social-distance-perfection-rate [
+          fd 1
+        ]
+      ]
+    ]
+  ]
+
   ;let destination patch-ahead 1
   ;let this-person self
   ;ifelse [pxcor] of destination > 0 [ask this-person [setxy (- max-pxcor / 2) ycor]] [fd 1]
@@ -368,10 +389,10 @@ NIL
 0
 
 PLOT
-10
-425
-262
-589
+790
+60
+1040
+240
 Populations
 weeks
 people
@@ -404,10 +425,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-13
-378
-98
-423
+790
+15
+875
+60
 NIL
 %infected
 1
@@ -415,10 +436,10 @@ NIL
 11
 
 MONITOR
-100
-378
-174
-423
+875
+15
+955
+60
 NIL
 %immune
 1
@@ -426,10 +447,10 @@ NIL
 11
 
 MONITOR
-181
-379
-261
-424
+955
+15
+1040
+60
 years
 ticks / 52
 1
@@ -438,9 +459,9 @@ ticks / 52
 
 CHOOSER
 40
-275
+405
 235
-320
+450
 turtle-shape
 turtle-shape
 "person" "circle"
@@ -492,14 +513,14 @@ contact-time
 20.0
 1
 1
-NIL
+weeks
 HORIZONTAL
 
 PLOT
-785
-100
-985
-250
+790
+345
+1035
+505
 Degree centrality
 NIL
 NIL
@@ -515,10 +536,10 @@ PENS
 "Std. dev." 1.0 0 -7500403 true "" "plot std-dev-degree-centrality"
 
 MONITOR
-785
-10
-985
-55
+790
+255
+1035
+300
 Average degree centrality
 avg-degree-centrality
 1
@@ -526,10 +547,10 @@ avg-degree-centrality
 11
 
 MONITOR
-785
-55
-985
-100
+790
+300
+1035
+345
 Std. dev. of degree centrality
 std-dev-degree-centrality
 1
@@ -538,13 +559,39 @@ std-dev-degree-centrality
 
 CHOOSER
 40
-325
+455
 235
-370
+500
 turtle-color
 turtle-color
 "health status" "degree centrality"
 0
+
+SWITCH
+70
+280
+202
+313
+social-distance
+social-distance
+1
+1
+-1000
+
+SLIDER
+40
+330
+235
+363
+social-distance-perfection-rate
+social-distance-perfection-rate
+0
+100
+70.0
+1
+1
+%
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
