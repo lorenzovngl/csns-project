@@ -4,10 +4,13 @@ undirected-link-breed [contacts contact]
 
 people-own
   [ sick?                ;; if true, the turtle is infectious
+    exposed?
+    quarantined?
+    isolated?
     remaining-immunity   ;; how many weeks of immunity the turtle has left
     sick-time            ;; how long, in weeks, the turtle has been infectious
     age                  ;; how many weeks old the turtle is
-    ;contacts
+    exposed-time
     degree-centrality
     q-days ]
 
@@ -45,6 +48,7 @@ end
 to setup
   clear-all
   setup-constants
+  ;setup-enviroment
   setup-turtles
   update-global-variables
   update-display
@@ -55,15 +59,34 @@ to setup
   reset-ticks
 end
 
+to setup-enviroment
+  ask patches with [pxcor < -17 or pxcor > 17] [
+    set pcolor gray
+  ]
+  ask patches with [pxcor = -19 and pycor = 17] [
+    set plabel-color black
+    set plabel "Hospitalized"
+  ]
+  ask patches with [pxcor = 22 and pycor = 17] [
+    set plabel-color black
+    set plabel "Quarantined"
+  ]
+end
+
 ;; We create a variable number of turtles of which 10 are infectious,
 ;; and distribute them randomly
 to setup-turtles
   create-people number-people
     [ setxy random-xcor random-ycor
-      ;setxy ((random-xcor / 2) - (max-pxcor / 2)) random-ycor
+      ;setxy (random-xcor * (max-pxcor - 6) / max-pxcor) random-ycor
       set age random lifespan
+      set sick? false
+      set exposed? false
+      set isolated? false
+      set quarantined? false
       set sick-time 0
       set remaining-immunity 0
+      set exposed-time 0
       set size 1.5  ;; easier to see
       ;set contacts (list)
       set q-days 0
@@ -83,23 +106,38 @@ to setup-turtles
   ;  ]
   ;]
 
-  ask n-of 10 people
+  ask n-of 8 people
+    [ get-exposed ]
+  ask n-of 2 people
     [ get-sick ]
+end
+
+to get-exposed ;; turtle procedure
+  set exposed? true
+  if quarantine [
+    set quarantined? true
+  ]
+  set exposed-time 0
 end
 
 to get-sick ;; turtle procedure
   set sick? true
+  if isolation [
+    set isolated? true
+  ]
   set remaining-immunity 0
 end
 
 to get-healthy ;; turtle procedure
   set sick? false
+  set exposed? false
   set remaining-immunity 0
   set sick-time 0
 end
 
 to become-immune ;; turtle procedure
   set sick? false
+  set exposed? false
   set sick-time 0
   set remaining-immunity immunity-duration
 end
@@ -116,6 +154,8 @@ to go
   ask people [
     get-older
     move
+    if exposed? [set exposed-time exposed-time + 1]
+    if exposed-time >= incubation-period [ get-sick ]
     if sick? [ recover-or-die ]
     ifelse sick? [ infect ] [ reproduce ]
     update-contacts
@@ -195,14 +235,19 @@ end
 
 to update-display
   let maxdc (max [degree-centrality] of people)
-  show maxdc
-  ask people
-    [ if shape != turtle-shape [ set shape turtle-shape ]
+  ask people [
+      if shape != turtle-shape [
+        set shape turtle-shape
+      ]
       set color ifelse-value (turtle-color = "health status") [
         ifelse-value sick? [ red ] [
-          ifelse-value immune? [ white ] [ green ]
+          ifelse-value immune? [ white ] [
+            ifelse-value exposed? [ orange ][ green ]
+          ]
         ]
-      ] [ ifelse-value (degree-centrality > 0) [scale-color red degree-centrality 0 maxdc] [gray] ]
+    ] [ ifelse-value (turtle-color = "mobility status") [
+        ifelse-value isolated? [ magenta ] [ ifelse-value quarantined? [ blue ] [ cyan ] ]
+    ] [ifelse-value (degree-centrality > 0) [scale-color red degree-centrality 0 maxdc] [gray] ]]
     ]
 end
 
@@ -220,6 +265,17 @@ end
 to move ;; turtle procedure
   rt random 100
   lt random 100
+
+  ;let valid-move false
+  ;while [not valid-move] [
+  ;  rt random 100
+  ;  lt random 100
+  ;  ask patch-ahead 1 [
+  ;    set valid-move not (pxcor < -17 or pxcor > 17)
+  ;  ]
+  ;]
+
+
   let not-move-probability 10
 
   if q-days = 0 [
@@ -238,6 +294,8 @@ to move ;; turtle procedure
     ]
   ]
 
+  ;if xcor < -17 or xcor > 17 [ rt 180 fd 1 ]
+
   ;let destination patch-ahead 1
   ;let this-person self
   ;ifelse [pxcor] of destination > 0 [ask this-person [setxy (- max-pxcor / 2) ycor]] [fd 1]
@@ -248,7 +306,7 @@ end
 to infect ;; turtle procedure
   ask other people-here with [ not sick? and not immune? ]
     [ if random-float 100 < infectiousness
-      [ get-sick ] ]
+      [ get-exposed ] ]
 end
 
 ;; Once the turtle has been sick long enough, it
@@ -285,7 +343,7 @@ end
 GRAPHICS-WINDOW
 280
 10
-778
+946
 509
 -1
 -1
@@ -299,8 +357,8 @@ GRAPHICS-WINDOW
 1
 1
 1
--17
-17
+-23
+23
 -17
 17
 1
@@ -310,9 +368,9 @@ ticks
 30.0
 
 SLIDER
-40
+55
 205
-234
+249
 238
 duration
 duration
@@ -325,9 +383,9 @@ weeks
 HORIZONTAL
 
 SLIDER
-40
+55
 171
-234
+249
 204
 chance-recover
 chance-recover
@@ -340,9 +398,9 @@ chance-recover
 HORIZONTAL
 
 SLIDER
-40
+55
 137
-234
+249
 170
 infectiousness
 infectiousness
@@ -389,11 +447,11 @@ NIL
 0
 
 PLOT
-790
-60
-1040
-240
-Populations
+960
+10
+1255
+215
+Populations - Health status
 weeks
 people
 0.0
@@ -404,10 +462,11 @@ true
 true
 "" ""
 PENS
-"sick" 1.0 0 -2674135 true "" "plot count people with [ sick? ]"
+"infected" 1.0 0 -2674135 true "" "plot count people with [ sick? ]"
 "immune" 1.0 0 -7500403 true "" "plot count people with [ immune? ]"
-"healthy" 1.0 0 -10899396 true "" "plot count people with [ not sick? and not immune? ]"
-"total" 1.0 0 -13345367 true "" "plot count people"
+"susceptible" 1.0 0 -10899396 true "" "plot count people with [ not exposed? and not sick? and not immune? ]"
+"exposed" 1.0 0 -955883 true "" "plot count people with [ exposed? ]"
+"total" 1.0 0 -16777216 true "" "plot count people"
 
 SLIDER
 40
@@ -425,43 +484,43 @@ NIL
 HORIZONTAL
 
 MONITOR
-790
-15
-875
-60
-NIL
-%infected
+1265
+110
+1390
+155
+I - Infected (%)
+(count people with [ sick? ] / count people) * 100
 1
 1
 11
 
 MONITOR
-875
-15
-955
-60
-NIL
+1265
+160
+1347
+205
+Immune (%)
 %immune
 1
 1
 11
 
 MONITOR
-955
-15
-1040
-60
-years
+1355
+160
+1440
+205
+Years
 ticks / 52
 1
 1
 11
 
 CHOOSER
-40
-405
-235
-450
+285
+515
+480
+560
 turtle-shape
 turtle-shape
 "person" "circle"
@@ -502,9 +561,9 @@ NIL
 1
 
 SLIDER
-40
+55
 240
-235
+250
 273
 contact-time
 contact-time
@@ -517,10 +576,10 @@ weeks
 HORIZONTAL
 
 PLOT
-790
-345
-1035
-505
+960
+430
+1255
+560
 Degree centrality
 NIL
 NIL
@@ -536,10 +595,10 @@ PENS
 "Std. dev." 1.0 0 -7500403 true "" "plot std-dev-degree-centrality"
 
 MONITOR
-790
-255
-1035
-300
+1265
+430
+1415
+475
 Average degree centrality
 avg-degree-centrality
 1
@@ -547,10 +606,10 @@ avg-degree-centrality
 11
 
 MONITOR
-790
-300
-1035
-345
+1265
+485
+1415
+530
 Std. dev. of degree centrality
 std-dev-degree-centrality
 1
@@ -558,20 +617,20 @@ std-dev-degree-centrality
 11
 
 CHOOSER
-40
-455
-235
-500
+750
+515
+945
+560
 turtle-color
 turtle-color
-"health status" "degree centrality"
-0
+"health status" "mobility status" "degree centrality"
+1
 
 SWITCH
-70
-280
-202
-313
+55
+310
+250
+343
 social-distance
 social-distance
 1
@@ -579,10 +638,10 @@ social-distance
 -1000
 
 SLIDER
-40
-330
-235
-363
+55
+345
+250
+378
 social-distance-perfection-rate
 social-distance-perfection-rate
 0
@@ -592,6 +651,209 @@ social-distance-perfection-rate
 1
 %
 HORIZONTAL
+
+SLIDER
+55
+275
+250
+308
+incubation-period
+incubation-period
+0
+100
+20.0
+1
+1
+weeks
+HORIZONTAL
+
+SWITCH
+55
+380
+250
+413
+quarantine
+quarantine
+0
+1
+-1000
+
+SLIDER
+55
+415
+250
+448
+quarantine-perfection-rate
+quarantine-perfection-rate
+0
+100
+51.0
+1
+1
+NIL
+HORIZONTAL
+
+SWITCH
+55
+450
+250
+483
+isolation
+isolation
+0
+1
+-1000
+
+SLIDER
+55
+485
+250
+518
+isolation-perfection-rate
+isolation-perfection-rate
+0
+100
+50.0
+1
+1
+NIL
+HORIZONTAL
+
+PLOT
+960
+220
+1255
+425
+Population - Mobility status
+weeks
+people
+0.0
+52.0
+0.0
+200.0
+true
+true
+"" ""
+PENS
+"free" 1.0 0 -11221820 true "" "plot count people with [ not isolated? and not quarantined?]"
+"quarantined" 1.0 0 -13345367 true "" "plot count people with [ quarantined? ]"
+"isolated" 1.0 0 -5825686 true "" "plot count people with [ isolated? ]"
+"total" 1.0 0 -16777216 true "" "plot count people"
+
+TEXTBOX
+20
+135
+60
+166
+ε
+25
+0.0
+1
+
+TEXTBOX
+20
+415
+40
+446
+ε
+25
+0.0
+1
+
+TEXTBOX
+20
+480
+55
+511
+ε
+25
+0.0
+1
+
+TEXTBOX
+35
+155
+55
+173
+E
+11
+0.0
+1
+
+TEXTBOX
+35
+435
+50
+453
+Q
+11
+0.0
+1
+
+TEXTBOX
+35
+500
+50
+518
+J
+11
+0.0
+1
+
+MONITOR
+1265
+10
+1390
+55
+S - Susceptibles (%)
+(count people with [ not exposed? and not sick? and not immune? ] / count people) * 100
+1
+1
+11
+
+MONITOR
+1265
+60
+1390
+105
+E - Exposed (%)
+(count people with [ exposed? ] / count people) * 100
+1
+1
+11
+
+MONITOR
+1270
+270
+1385
+315
+Q - Quarantined (%)
+(count people with [ quarantined? ] / count people) * 100
+1
+1
+11
+
+MONITOR
+1270
+320
+1385
+365
+J - Isolated (%)
+(count people with [ isolated? ] / count people) * 100
+1
+1
+11
+
+MONITOR
+1270
+220
+1385
+265
+Free
+(count people with [ not exposed? and not isolated? ] / count people) * 100
+1
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
