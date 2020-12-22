@@ -1,0 +1,53 @@
+Equations of the SEIQJR model:
+
+S = Susceptible
+E = Exposed
+I = Infected
+Q = Quarantined
+J = Isolated/Hospitalized
+R = Recovered
+
+e = epsilon
+
+a = infection rate
+e_E = probability that a person infected (in E) transmit the infection, infected-transmission-factor
+e_Q = probability that a person quarantined (in Q) make a contact, quarantined-contact-factor
+e_J = probability that a person isolated (in E) transmit the infection, isolation-transmission-factor
+k_E = probability that exposed people become infective
+k_Q = probability that quarantined people are isolated
+c_Q = percentage of exposed people that are quarantined at each time step
+c_J = percentage of infected people that are isolated at each time step
+b_I = probability that an infected person get recovered
+b_J = probability that an isolated person get recovered
+
+  a*S*(e_E*E + e_E*e_Q*Q + e_J*J)    -----     k_E*E      -----     b_I*I
+  ---------------------------------> | E | -------------> | I | -------------
+  |                                  -----                -----             v
+-----                                  |                    |             -----
+| S |                            c_Q*E |              c_J*I |             | R |
+-----                                  v                    v             -----
+                                     -----     k_Q*Q      -----     b_J*J   ^
+                                     | Q | -------------> | J | -------------
+                                     -----                -----
+
+- dS/dt = -a*S*(e_E*E + e_E*e_Q*Q + e_J*J)
+At each time step, the Susceptible class loses an amount of people equal to the number of exposed people multiplied by the infected-transmission-factor plus the number of quarantined people multiplied by the infected-transmission-factor multiplied by quarantined-contact-factor plus the number of isolated people multiplied by the isolation-transmission-factor, all multiplied by the number of susceptible multiplied by the infection rate.
+
+- dE/dt = a*S*(e_E*E + e_E*e_Q*Q + e_J*J) - (k_E + c_Q)*E
+At each time step, the Exposed class gains an amount of people equal to the number of exposed people multiplied by the infected-transmission-factor plus the number of quarantined people multiplied by the infected-transmission-factor multiplied by quarantined-contact-factor plus the number of isolated people multiplied by the isolation-transmission-factor, all multiplied by the number of susceptible multiplied by the infection rate.
+Morover, this class loses an amount of people equal to the number of exposed people multiplied by the probability that exposed people become infective plus the percentage of exposed people that are quarantined at each time step.
+
+- dQ/dt = c_Q*E - k_Q*Q
+At each time step, the Quarantined class gains an amount of people equal to the number of exposed people multiplied by the percentage of exposed people that are quarantined at each time step.
+Moreover, this class loses an amount of people equal to the number of quarantined people multiplied by the probability that quarantined people are isolated.
+
+- dI/dt = k_E*E - (b_I + c_J)*I
+At each time step, the Infected class gains an amount of people equal to the number of exposed people multiplied by the probability that exposed people become infective.
+Moreover, this class loses an amount of people equal to the number of infected people multiplied by the probability that an infected person get recovered plus percentage of infected people that are isolated at each time step.
+
+- dJ/dt = k_Q*Q + c_J*I - b_J*J
+At each time step, the Isolated class gains an amount of people equal to the number of quarantined people multiplied by the probability that quarantined people are isolated plus the number of infected people multiplied by the percentage of infected people that are isolated at each time step.
+Moreover, this class loses an amount of people equal to the number of isolated people multiplied by the probability that an isolated person get recovered.
+
+- dR/dt = b_I*I + b_J*J
+At each time step, the Recovered class gains an amount of people equal to the number of infected people multiplied by the probability that an infected person get recovered plus the number of isolated people multiplied by probability that an isolated person get recovered.
