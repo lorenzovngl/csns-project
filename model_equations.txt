@@ -10,9 +10,9 @@ R = Recovered
 e = epsilon
 
 a = infection rate
-e_E = probability that a person infected (in E) transmit the infection, infected-transmission-factor
+e_E = probability that a person exposed (in E) transmit the infection, exposed-transmission-factor
 e_Q = probability that a person quarantined (in Q) make a contact, quarantined-contact-factor
-e_J = probability that a person isolated (in E) transmit the infection, isolation-transmission-factor
+e_J = probability that a person isolated (in J) transmit the infection, isolation-transmission-factor
 k_E = probability that exposed people become infective
 k_Q = probability that quarantined people are isolated
 c_Q = percentage of exposed people that are quarantined at each time step
@@ -31,7 +31,7 @@ b_J = probability that an isolated person get recovered
                                      -----                -----
 
 - dS/dt = -a*S*(e_E*E + e_E*e_Q*Q + e_J*J)
-At each time step, the Susceptible class loses an amount of people equal to the number of exposed people multiplied by the infected-transmission-factor plus the number of quarantined people multiplied by the infected-transmission-factor multiplied by quarantined-contact-factor plus the number of isolated people multiplied by the isolation-transmission-factor, all multiplied by the number of susceptible multiplied by the infection rate.
+At each time step, the Susceptible class loses an amount of people equal to the number of exposed people multiplied by the exposed-transmission-factor plus the number of quarantined people multiplied by the infected-transmission-factor multiplied by quarantined-contact-factor plus the number of isolated people multiplied by the isolation-transmission-factor, all multiplied by the number of susceptible multiplied by the infection rate.
 
 - dE/dt = a*S*(e_E*E + e_E*e_Q*Q + e_J*J) - (k_E + c_Q)*E
 At each time step, the Exposed class gains an amount of people equal to the number of exposed people multiplied by the infected-transmission-factor plus the number of quarantined people multiplied by the infected-transmission-factor multiplied by quarantined-contact-factor plus the number of isolated people multiplied by the isolation-transmission-factor, all multiplied by the number of susceptible multiplied by the infection rate.
