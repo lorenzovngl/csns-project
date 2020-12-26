@@ -1,0 +1,158 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{none/global//global/global}
+  \entry{brauer}{book}{}
+    \name{author}{3}{}{%
+      {{hash=BF}{%
+         family={Brauer},
+         familyi={B\bibinitperiod},
+         given={Fred},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=CCC}{%
+         family={Castillo-Chavez},
+         familyi={C\bibinithyphendelim C\bibinitperiod},
+         given={Carlos},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=FZ}{%
+         family={Feng},
+         familyi={F\bibinitperiod},
+         given={Zhilan},
+         giveni={Z\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Springer New York}%
+    }
+    \strng{namehash}{BFCCCFZ1}
+    \strng{fullhash}{BFCCCFZ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{title}{Mathematical Models in Epidemiology}
+    \verb{url}
+    \verb https://www.springer.com/gp/book/9781493998265
+    \endverb
+    \field{year}{2019}
+  \endentry
+
+  \entry{giordano}{article}{}
+    \name{author}{7}{}{%
+      {{hash=GG}{%
+         family={Giordano},
+         familyi={G\bibinitperiod},
+         given={Giulia},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=BF}{%
+         family={Blanchini},
+         familyi={B\bibinitperiod},
+         given={Franco},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=BR}{%
+         family={Bruno},
+         familyi={B\bibinitperiod},
+         given={Raffaele},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=CP}{%
+         family={Colaneri},
+         familyi={C\bibinitperiod},
+         given={Patrizio},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=FA}{%
+         family={Filippo},
+         familyi={F\bibinitperiod},
+         given={Alessandro},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=MA}{%
+         family={Matteo},
+         familyi={M\bibinitperiod},
+         given={Angela},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=CM}{%
+         family={Colaneri},
+         familyi={C\bibinitperiod},
+         given={Marta},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{GG+1}
+    \strng{fullhash}{GGBFBRCPFAMACM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \verb{doi}
+    \verb 10.1038/s41591-020-0883-7
+    \endverb
+    \field{pages}{1\bibrangedash 6}
+    \field{title}{Modelling the COVID-19 epidemic and implementation of
+  population-wide interventions in Italy}
+    \field{volume}{26}
+    \field{journaltitle}{Nature Medicine}
+    \field{month}{06}
+    \field{year}{2020}
+  \endentry
+
+  \entry{netlogo}{online}{}
+    \name{author}{1}{}{%
+      {{hash=WU}{%
+         family={Wilensky},
+         familyi={W\bibinitperiod},
+         given={U.},
+         giveni={U\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{WU1}
+    \strng{fullhash}{WU1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{title}{NetLogo}
+    \verb{url}
+    \verb https://ccl.northwestern.edu/netlogo/
+    \endverb
+    \field{year}{1998. Center for Connected Learning and Computer-Based
+  Modeling, Northwestern University, Evanston, IL}
+  \endentry
+
+  \entry{netlogo-virus}{online}{}
+    \name{author}{1}{}{%
+      {{hash=WU}{%
+         family={Wilensky},
+         familyi={W\bibinitperiod},
+         given={U.},
+         giveni={U\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{WU1}
+    \strng{fullhash}{WU1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{title}{NetLogo Virus model}
+    \verb{url}
+    \verb https://ccl.northwestern.edu/netlogo/models/Virus
+    \endverb
+    \field{year}{1999. Center for Connected Learning and Computer-Based
+  Modeling, Northwestern University, Evanston, IL}
+  \endentry
+\enddatalist
+\endinput

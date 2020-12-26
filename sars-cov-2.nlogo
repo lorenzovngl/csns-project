@@ -1,5 +1,12 @@
+;;; SARS-CoV-2 pandemic in NetLogo
+;;;
+;;; Author: Lorenzo Vainigli
+;;;         lorenzo.vainigli@studio.unibo.it
+;;;         matr. 0000842756
+;;;
+;;; Based on a work of Uri Wilensky
+
 breed [people person]
-breed [vertices vertex]
 undirected-link-breed [contacts contact]
 
 people-own [
@@ -48,7 +55,6 @@ to reset
   set contact-time 20
 end
 
-;; The setup is divided into four procedures
 to setup
   clear-all
 
@@ -60,8 +66,6 @@ to setup
   reset-ticks
 end
 
-;; We create a variable number of turtles of which 10 are infectious,
-;; and distribute them randomly
 to setup-turtles
   create-people number-people [
     setxy random-xcor random-ycor
@@ -83,11 +87,13 @@ end
 
 to go
 
+  ; once-per-tick actions
   ask people [
     move
     infect
   ]
 
+  ; once-per-day actions
   if ticks mod ticks-per-day = 0 [
     ask people [
       ifelse exposed? [
@@ -323,14 +329,6 @@ to infect ;; turtle procedure
       ]
     ]
   ]
-end
-
-;; Once the turtle has been sick long enough, it
-;; either recovers (and becomes immune) or it dies.
-to recover-or-die ;; turtle procedure
-  ifelse random-float 100 < infected-chance-recover   ;; either recover or die
-      [ get-recovered ]
-      [ die ]
 end
 
 ; Copyright 1998 Uri Wilensky.
@@ -603,7 +601,7 @@ SWITCH
 473
 social-distance
 social-distance
-1
+0
 1
 -1000
 
@@ -616,7 +614,7 @@ social-distance-perfection-rate
 social-distance-perfection-rate
 0
 100
-50.0
+100.0
 1
 1
 %

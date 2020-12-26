@@ -1,0 +1,41 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
+\contentsline {title}{Modeling SARS-CoV-2 pandemic in NetLogo}{1}{}%
+\defcounter {refsection}{0}\relax 
+\authcount {1}
+\defcounter {refsection}{0}\relax 
+\contentsline {author}{Lorenzo Vainigli \unskip \ \ignorespaces lorenzo.vainigli@studio.unibo.it \unskip \ \ignorespaces matr. 0000842756}{1}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1}Introduction}{2}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2}Previous work}{2}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3}Studying}{2}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1}Achievements}{2}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.2}The SIS model}{3}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{New classes}{3}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{New variables}{3}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.3}The SEIS model}{4}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{New classes}{4}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{New variables}{4}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\textbf {No immunity provided}}{4}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.4}The SEIQJS model}{5}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{New classes}{5}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{New variables}{5}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4}Coding}{6}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {5}Results}{6}{}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {6}Conclusions}{6}{}%
