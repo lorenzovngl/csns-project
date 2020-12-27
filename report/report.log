@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.11) (preloaded format=pdflatex 2020.11.11)  26 DEC 2020 16:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.11) (preloaded format=pdflatex 2020.11.11)  27 DEC 2020 16:24
 entering extended mode
 **./report.tex
 (report.tex
@@ -916,23 +916,39 @@ Missing character: There is no ; in font nullfont!
 Underfull \vbox (badness 2837) has occurred while \output is active []
 
  [4]
-[5]
-Overfull \hbox (4.12926pt too wide) in paragraph at lines 171--171
+[5] [6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 221--222
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 223--224
+
+ []
+
+
+Overfull \hbox (8.24225pt too wide) in paragraph at lines 233--234
+[]\OT1/cmr/m/it/12 once-per-day \OT1/cmr/m/n/12 pro-ce-dures that are called ev
+-ery time the days counter
+ []
+
+[8]
+Overfull \hbox (4.12926pt too wide) in paragraph at lines 248--248
 \OT1/cmr/m/it/12 Na-ture Medicine \OT1/cmr/m/n/12 26 (June 2020), pp. 1{6. \OT1
 /cmr/m/sc/12 doi\OT1/cmr/m/n/12 : $\OT1/cmtt/m/n/12 10 . 1038 / s41591 -[]
  []
 
-[6] [7] (report.aux)
+[9] (report.aux)
 Package logreq Info: Writing requests to 'report.run.xml'.
 \openout1 = `report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 19945 strings out of 479799
- 406734 string characters out of 2864972
+ 19947 strings out of 479799
+ 406757 string characters out of 2864972
  866944 words of memory out of 3000000
- 36645 multiletter control sequences out of 15000+200000
- 542353 words of font info for 53 fonts, out of 3000000 for 9000
+ 36646 multiletter control sequences out of 15000+200000
+ 542521 words of font info for 54 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  108i,8n,111p,1853b,1322s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
@@ -941,20 +957,21 @@ nts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/LorenzoVainigli/AppData/Local/
 Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><C:/Users/LorenzoVa
 inigli/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmcsc10.pfb
 ><C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
-fonts/cm/cmmi12.pfb><C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fon
-ts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/LorenzoVainigli/AppData/Local/P
-rograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/LorenzoVainig
-li/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/U
-sers/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
-cm/cmr12.pfb><C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type
-1/public/amsfonts/cm/cmr9.pfb><C:/Users/LorenzoVainigli/AppData/Local/Programs/
-MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/LorenzoVainigli/AppD
-ata/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/L
-orenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmt
-t12.pfb>
-Output written on report.pdf (7 pages, 167159 bytes).
+fonts/cm/cmitt10.pfb><C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fo
+nts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/LorenzoVainigli/AppData/Local
+/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/LorenzoVain
+igli/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:
+/Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfont
+s/cm/cmmi9.pfb><C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/ty
+pe1/public/amsfonts/cm/cmr12.pfb><C:/Users/LorenzoVainigli/AppData/Local/Progra
+ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/LorenzoVainigli/App
+Data/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/
+LorenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cm
+ti12.pfb><C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type1/pu
+blic/amsfonts/cm/cmtt12.pfb>
+Output written on report.pdf (9 pages, 179052 bytes).
 PDF statistics:
- 81 PDF objects out of 1000 (max. 8388607)
+ 91 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

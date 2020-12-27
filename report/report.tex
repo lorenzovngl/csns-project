@@ -35,7 +35,7 @@ This is the paper's abstract \ldots
 In the literature there is some works that I used to plan this project. The concepts of model that I used derived from a book written by Brauer et al., that shows the models that can be used in a simulation of virus spreading in a population \cite{brauer}. An article from Giordano et al. explain how to model the intervetions in the population to fight the COVID-19 outbreak \cite{giordano}, but it's too complex for the purposes of this project.\\
 The Netlogo \cite{netlogo} models library offers a program that simulate the virus spreading in a population \cite{netlogo-virus}, it's very simple and general-purpose, but it was a good point to start the building of the model of this project.
 
-\section{Studying}
+\section{Modeling}
 In this section I will explain the process of thinking which models are better to use for the aim of the project and how I modified the ones from \cite{brauer}.
 
 \subsection{Achievements}
@@ -152,15 +152,92 @@ $$\frac{dQ}{dt} = c_QE - k_QQ$$
 $$\frac{dI}{dt} = k_EE - (b_I + c_J)I$$
 $$\frac{dJ}{dt} = k_QQ + c_JI - b_JJ$$
 
-\section{Action to limit the epidemic spread}
+\subsection{Action to limit the epidemic spread}
 In a context of epidemic spread some actions can carried on to protect the health of the population. Basically, because of the virus infection is transmitted during contacts person-to-person, these contacts must be reduced. Putting the exposed or infected people in quarantine or isolation is the best thing to do, but also methods of social distancing or mobility restrictions can be used. \\
 In this project I implemented quarantine, isolation, social distance and lockdown.
 
-\section{Contact tracing and evaluation method}
+\subsection{Contact tracing and evaluation method}
 As we know that SARS-CoV-2 infection leads to an asymptomatic status, a contact tracing technique can be used to find people who can transmit the virus before that they become symptomatic. In this model I built a contact tracing technique not properly to find potential infected individuals, but to evaluate the amount of contacts in each simulation to have an indicator of the power of the spreading. What is important to notice is that the more contacts we have between people, the more powerfull the outbreak will be and thus the harder will be to control it.
 
 \section{Implementation}
 In this section I describe the way I implemented the concepts shown in the previous section.
+
+\subsection{The base model}
+The Virus model from the NetLogo library \cite{netlogo-virus} is the point from which I started the development of my model. The Virus model is an implementation of the SIR model, with some peculiarities:
+\begin{enumerate}
+\item people can reproduce;
+\item people can recover from the infection but they can also die;
+\item recovered individuals have a phase of immunity before they come back to the susceptible class.
+\end{enumerate}
+I conclude that these three characteristics have no interest to be in my final model, so I edited this model to have the following situation:
+\begin{enumerate}
+\item people cannot reproduce because the epidemic spread is as fast as we can ignore the machanism of reproduction in the population;
+\item people can only recover from the infection and they cannot die;
+\item recovered individuals have no phase of immunity beacuse, for SARS-CoV-2, we don't have clear informations.
+\end{enumerate}
+Once I have a SIR model is easy to transform it to a SIS model: the only thing to do is put the flow that previously went to the recovered class ($R$) in the susceptible class ($S$).\\
+After this editing I basically my final model will be an enrichment of this model.
+
+\subsection{Parameters}
+The parameters of the model are the ones described for the SEIQJS model, divided into fixed parameters, i.e. the ones that are specific to the virus, and the control parameters, which can be tuned in order to study attempts to manage the epidemic.
+
+\paragraph{Fixed parameters}
+\begin{itemize}
+\item \texttt{infection-rate} ($a$);
+\item \texttt{exposed-transmission-factor} ($\varepsilon_E$);
+\item \texttt{exposed-to-infected-rate} ($k_E$);
+\item \texttt{quarantined-to-isolated-rate} ($k_Q$);
+\item \texttt{infected-chance-recover} ($b_I$);
+\item \texttt{isolated-chance-recover} ($b_J$).
+\end{itemize}
+
+\paragraph{Control parameters}
+\begin{itemize}
+\item \texttt{quarantine-perfection-rate} ($\varepsilon_Q$);
+\item \texttt{quarantine-perfection-rate} ($\varepsilon_J$);
+\item \texttt{quarantines-per-tick-rate} ($c_Q$);
+\item \texttt{isolations-per-tick-rate} ($c_J$).
+\end{itemize}
+
+\subsection{Class representation}
+The SIS, SEIS and other similar diagrams have a fundamental constraint: at each time step, a person of the population (i.e. an agent) must belong to one and only one class. This is done by simply add five properities to the agent: one of each indicates a different class, so at each time step, one of these property must be true and the others false.
+
+\subsection{Class transitions methods}
+To make possible that a person change class a series of methods were implemented. All of them share a similar structure:
+\begin{enumerate}
+\item check if the candidate that is going to go to the class actually belongs to a class from which a flow from the two classes is defined (throw an error if not);
+\item put to \textit{false} the properties of the person that could hold the value \textit{true};
+\item put to \textit{true} the property that indicates the new class.
+\end{enumerate}
+These methods are \texttt{get-exposed}, \texttt{get-quarantined}, \texttt{get-infected}, \texttt{get-isolated} and \texttt{get-recovered}.
+
+\subsection{Core procedures: setup and go}
+Every NetLogo model is based on these two procedures:
+\begin{itemize}
+\item \texttt{setup} is the function that provides the initialization of the model before every simulation;
+\item \texttt{go} is the function that will be executed every time step (tick).
+\end{itemize}
+
+\paragraph{The procedure \texttt{setup}} creates the turtles that represent the population and initialize their properties: every turtle is putted in the susceptible class. To create the beginning of virus spreading, after these actions some of the created turtles are picked at random and moved to the exposed class and to the infected class.\\
+
+To understand the explaination of the following procedure \texttt{go} I need to underline first a design choice: I decided to let that some actions occurs more often that others, below I explain which they are an why. To implement this behaviour I used a new variable that counts the days elapsed from the beginning of the simulation, every time \texttt{ticks} is a multiplier of \texttt{ticks-per-days}, days counter advances.\\
+
+\paragraph{The procedure \texttt{go}} calls various other procedures that carried on the simulation and the behaviour of the model, but they are divided into two groups:
+\begin{itemize}
+\item \textit{once-per-tick} procedures that are called every time the \texttt{go} procedure is called, so every tick
+\begin{itemize}
+\item people motion in the enviroment, 
+\item people transition to exposed class due to a contact with an infected person,
+\item contract tracing update;
+\end{itemize}
+\item \textit{once-per-day} procedures that are called every time the days counter advanced:
+\begin{itemize}
+\item every class transition except the one from susceptible to exposed, that, as I said previously, happens for every tick.
+\end{itemize}
+\end{itemize}
+
+
+
 
 \section{Results}\label{results}
 In this section we describe the results.

@@ -91,6 +91,7 @@ to go
   ask people [
     move
     infect
+    update-contacts
   ]
 
   ; once-per-day actions
@@ -114,12 +115,11 @@ to go
         ]
       ]
 
-      update-contacts
-    ]
+      quarantine-exposed
+      isolate-infected
+      isolate-quarantined
 
-    quarantine-exposed
-    isolate-infected
-    isolate-quarantined
+    ]
 
     ask contacts [
       set contact-age contact-age + 1
@@ -601,7 +601,7 @@ SWITCH
 473
 social-distance
 social-distance
-0
+1
 1
 -1000
 
