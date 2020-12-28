@@ -1,9 +1,9 @@
 \documentclass[12pt]{llncs}
 \usepackage{tikz}
 \usepackage{float}
+\usepackage{amsmath}
 
 \usetikzlibrary{calc}
-
 \usepackage[
 	backend=bibtex,
 	style=numeric,
@@ -23,11 +23,18 @@ A.Y. 2020-2021}
 \pagestyle{plain}
 
 \begin{document}
-\maketitle
+{\def\addcontentsline#1#2#3{}\maketitle}
 
 \begin{abstract}
 This is the paper's abstract \ldots
 \end{abstract}
+
+\begingroup
+\let\clearpage\relax
+\renewcommand{\contentsname}{}
+\setcounter{tocdepth}{2}
+\tableofcontents
+\endgroup
 
 \section{Introduction}
 
@@ -199,6 +206,8 @@ The parameters of the model are the ones described for the SEIQJS model, divided
 \item \texttt{isolations-per-tick-rate} ($c_J$).
 \end{itemize}
 
+Experiments with this model are made by trying different values for control parameters, while fixed parameters remain unchanged.
+
 \subsection{Class representation}
 The SIS, SEIS and other similar diagrams have a fundamental constraint: at each time step, a person of the population (i.e. an agent) must belong to one and only one class. This is done by simply add five properities to the agent: one of each indicates a different class, so at each time step, one of these property must be true and the others false.
 
@@ -235,6 +244,24 @@ To understand the explaination of the following procedure \texttt{go} I need to 
 \item every class transition except the one from susceptible to exposed, that, as I said previously, happens for every tick.
 \end{itemize}
 \end{itemize}
+
+\subsection{Virus propagation}
+The infection spreading of the virus in the population is implemented in the function \texttt{infect} that looks a little bit complicated but, essentialy, uses the parameters of the model call, in a proper way, the procedure \texttt{get\_exposed}. It's the only procedure that makes call to \texttt{get\_exposed}. Take a look to the comments in the code of the model to know more.
+
+\subsection{Contact tracing}
+Contact tracing is implemented using the construct \texttt{link} of NetLogo. Ar each time step, the program asks to each person to create a link with other people that share, in that moment, the same patch. Basically is the same way that the virus spreads and it has a sense beacuse the aim of contact tracing is to track the propagation of the virus. The result is a graph connecting people to each others.
+
+\subsection{Social distance and lockdown}
+Two methods were implemented to control people movement in order to reduce contacts between them: social distance and lockdown
+\paragraph{Social distance} can be enabled or disabled in this model and uses an auxiliry parameter called \texttt{social-distance-perfection-rate}. If social distance is disabled, people are free to move everywhere, while if it's enabled people avoid to move to a patch that is already occupied by others with an error probability of determined by $1 - \textrm{\texttt{social-distance-perfection-rate}}$.
+\paragraph{Lockdown} is implemented taking into account a value that defines the probability that a person will move or not. If the variable \texttt{lockdown-strinctness} is set to zero, people are completely free to move, while if the value increases, people will make a move with less probability. If a person doesn't move, it remain in the same patch where it was previously.\\ \\
+Take a look to the procedure \texttt{move} to find the code about these control measures.
+
+
+\subsection{Evaluation}
+In this model I consider to evaluate every situation analyzing the graph generate by the contact tracing method. The more connected is the graph, the more powerful is the virus spreading and so, in a real situation, the more stressed the health system will be.\\
+I use the definition of \textit{degree centrality} to have a clear indicator of the connections that each person create during simulation. Beacause of degree centrality is a node-based measure, I used the average of all the degree centrality to get a value to evaluate the entire graph. An auxiliary indicator of standard deviation for this average is provided. \\
+If a control action on the population reduces the value of \textit{average degree centrality}, it means that the action is effective.
 
 
 
