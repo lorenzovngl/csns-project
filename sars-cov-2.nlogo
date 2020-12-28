@@ -17,6 +17,8 @@ people-own [
   infected?
   isolated?
 
+  has_changed_class    ; every person can't change more than one class at each time step
+
   degree-centrality
 ]
 
@@ -34,22 +36,22 @@ globals [
 to reset
   set number-people 150
 
-  set infection-rate 50
-  set exposed-transmission-factor 50
-  set exposed-to-infected-rate 50
+  set infection-rate 80
+  set exposed-transmission-factor 90
+  set exposed-to-infected-rate 80
 
-  set quarantine-perfection-rate 50
+  set quarantine-perfection-rate 70
   set quarantines-per-tick-rate 50
   set quarantined-to-isolated-rate 50
 
-  set isolation-perfection-rate 50
+  set isolation-perfection-rate 90
   set isolations-per-tick-rate 50
 
-  set infected-chance-recover 50
-  set isolated-chance-recover 50
+  set infected-chance-recover 60
+  set isolated-chance-recover 80
 
   set social-distance false
-  set social-distance-perfection-rate 50
+  set social-distance-perfection-rate 80
   set lockdown-strictness 0
 
   set contact-time 20
@@ -74,21 +76,25 @@ to setup-turtles
     set exposed? false
     set isolated? false
     set quarantined? false
+    set has_changed_class false
     set degree-centrality 0
     set size 1.5
-    get-healthy
   ]
 
-  ask n-of 10 people
-    [ get-exposed ]
-  ask n-of 2 people with [ exposed? ]
-    [ get-infected ]
+  ask n-of 10 people [
+    get-exposed
+  ]
+  ask n-of 2 people with [ exposed? ] [
+    set has_changed_class false
+    get-infected
+  ]
 end
 
 to go
 
   ; once-per-tick actions
   ask people [
+    set has_changed_class false
     move
     infect
     update-contacts
@@ -115,9 +121,11 @@ to go
         ]
       ]
 
-      quarantine-exposed
-      isolate-infected
-      isolate-quarantined
+      if quarantine-and-isolation [
+        isolate-infected
+        isolate-quarantined
+        quarantine-exposed
+      ]
 
     ]
 
@@ -126,61 +134,82 @@ to go
       if contact-age > contact-time [
         die
       ]
+      ifelse show-contacts [
+        show-link
+      ] [
+        hide-link
+      ]
     ]
 
     update-metrics
     set days days + 1
+    update-plots
   ]
 
   update-display
-  tick
+  tick-advance 1
 end
 
 to get-exposed ;; turtle procedure
-  if not susceptible? [
-    show "Only susceptible people can become exposed"
-    error -1
+  if not has_changed_class [
+    if not susceptible? [
+      show "Only susceptible people can become exposed"
+      error -1
+    ]
+    set susceptible? false
+    set exposed? true
+    set has_changed_class true
   ]
-  set susceptible? false
-  set exposed? true
 end
 
 to get-quarantined ;; turtle procedure
-  if not exposed? [
-    show "Only exposed people can become quarantined"
-    error -1
+  if not has_changed_class [
+    if not exposed? [
+      show "Only exposed people can become quarantined"
+      error -1
+    ]
+    set exposed? false
+    set quarantined? true
+    set has_changed_class true
   ]
-  set exposed? false
-  set quarantined? true
 end
 
 to get-infected ;; turtle procedure
-  if not exposed? [
-    show "Only exposed people can become infected"
-    error -1
+  if not has_changed_class [
+    if not exposed? [
+      show "Only exposed people can become infected"
+      error -1
+    ]
+    set exposed? false
+    set infected? true
+    set has_changed_class true
   ]
-  set exposed? false
-  set infected? true
 end
 
 to get-isolated ;; turtle procedure
-  if not infected? and not quarantined? [
-    show "Only infected and quarantined people can become isolated"
-    error -1
+  if not has_changed_class [
+    if not infected? and not quarantined? [
+      show "Only infected and quarantined people can become isolated"
+      error -1
+    ]
+    set quarantined? false
+    set infected? false
+    set isolated? true
+    set has_changed_class true
   ]
-  set quarantined? false
-  set infected? false
-  set isolated? true
 end
 
 to get-recovered ;; turtle procedure
-  if not infected? and not isolated? [
-    show "Only infected or isolated people can become recovered"
-    error -1
+  if not has_changed_class [
+    if not infected? and not isolated? [
+      show "Only infected or isolated people can become recovered"
+      error -1
+    ]
+    set infected? false
+    set isolated? false
+    set susceptible? true
+    set has_changed_class true
   ]
-  set infected? false
-  set isolated? false
-  set susceptible? true
 end
 
 to quarantine-exposed
@@ -188,8 +217,7 @@ to quarantine-exposed
   let counter 0
   ask people with [exposed? and not quarantined? ] [
     if counter < max-quarantines-per-time [
-      set exposed? false
-      set quarantined? true
+      get-quarantined
       set counter counter + 1
     ]
   ]
@@ -200,8 +228,7 @@ to isolate-infected
   let counter 0
   ask people with [infected? and not isolated? ] [
     if counter < max-isolate-per-time [
-      set infected? false
-      set isolated? true
+      get-isolated
       set counter counter + 1
     ]
   ]
@@ -212,16 +239,10 @@ to isolate-quarantined
   let counter 0
   ask people with [ quarantined? and not isolated? ] [
     if counter < max-isolations-per-time [
-      set quarantined? false
-      set isolated? true
+      get-isolated
       set counter counter + 1
     ]
   ]
-end
-
-to get-healthy ;; turtle procedure
-  set infected? false
-  set exposed? false
 end
 
 to update-metrics
@@ -251,10 +272,12 @@ to update-display
       set shape turtle-shape
     ]
     set color ifelse-value (turtle-color = "class") [
-      ifelse-value infected? [ red ] [
-        ifelse-value exposed? [ orange ] [
-          ifelse-value isolated? [ magenta ] [
-            ifelse-value quarantined? [ blue ] [ green ]
+      ifelse-value susceptible? [ green ] [
+        ifelse-value infected? [ red ] [
+          ifelse-value exposed? [ orange ] [
+            ifelse-value isolated? [ magenta ] [
+              ifelse-value quarantined? [ blue ] [ white ]
+            ]
           ]
         ]
       ]
@@ -363,14 +386,14 @@ ticks
 
 SLIDER
 65
-365
+155
 260
-398
+188
 infected-chance-recover
 infected-chance-recover
 0.0
 100
-50.0
+60.0
 1.0
 1
 %
@@ -385,7 +408,7 @@ infection-rate
 infection-rate
 0.0
 99.0
-50.0
+80.0
 1.0
 1
 %
@@ -530,9 +553,9 @@ NIL
 
 SLIDER
 585
-515
+550
 720
-548
+583
 contact-time
 contact-time
 0
@@ -596,9 +619,9 @@ turtle-color
 
 SWITCH
 65
-440
+480
 260
-473
+513
 social-distance
 social-distance
 1
@@ -607,14 +630,14 @@ social-distance
 
 SLIDER
 65
-475
+515
 260
-508
+548
 social-distance-perfection-rate
 social-distance-perfection-rate
 0
 100
-100.0
+80.0
 1
 1
 %
@@ -622,14 +645,14 @@ HORIZONTAL
 
 SLIDER
 65
-165
+280
 260
-198
+313
 quarantine-perfection-rate
 quarantine-perfection-rate
 0
 100
-50.0
+70.0
 1
 1
 %
@@ -637,14 +660,14 @@ HORIZONTAL
 
 SLIDER
 65
-285
+400
 260
-318
+433
 isolation-perfection-rate
 isolation-perfection-rate
 0
 100
-50.0
+90.0
 1
 1
 %
@@ -662,9 +685,9 @@ TEXTBOX
 
 TEXTBOX
 30
-165
+280
 50
-196
+311
 ε
 25
 0.0
@@ -672,9 +695,9 @@ TEXTBOX
 
 TEXTBOX
 30
-280
+395
 65
-311
+426
 ε
 25
 0.0
@@ -692,9 +715,9 @@ E
 
 TEXTBOX
 45
-185
+300
 60
-203
+318
 Q
 11
 0.0
@@ -702,9 +725,9 @@ Q
 
 TEXTBOX
 45
-300
+415
 60
-318
+433
 J
 11
 0.0
@@ -756,9 +779,9 @@ J - Isolated (%)
 
 SLIDER
 65
-200
+315
 260
-233
+348
 quarantines-per-tick-rate
 quarantines-per-tick-rate
 0
@@ -771,9 +794,9 @@ HORIZONTAL
 
 TEXTBOX
 30
-195
+310
 45
-226
+341
 c
 25
 0.0
@@ -781,9 +804,9 @@ c
 
 TEXTBOX
 45
-215
+330
 60
-233
+348
 Q
 11
 0.0
@@ -791,9 +814,9 @@ Q
 
 SLIDER
 65
-320
+435
 260
-353
+468
 isolations-per-tick-rate
 isolations-per-tick-rate
 0
@@ -806,9 +829,9 @@ HORIZONTAL
 
 TEXTBOX
 30
-315
+430
 55
-346
+461
 c
 25
 0.0
@@ -816,9 +839,9 @@ c
 
 TEXTBOX
 45
-335
+450
 60
-353
+468
 J
 11
 0.0
@@ -826,14 +849,14 @@ J
 
 SLIDER
 65
-399
+189
 260
-432
+222
 isolated-chance-recover
 isolated-chance-recover
 0
 100
-50.0
+80.0
 1
 1
 %
@@ -841,9 +864,9 @@ HORIZONTAL
 
 TEXTBOX
 30
-364
+154
 45
-395
+185
 b
 25
 0.0
@@ -851,9 +874,9 @@ b
 
 TEXTBOX
 45
-389
+179
 60
-407
+197
 I
 11
 0.0
@@ -861,9 +884,9 @@ I
 
 TEXTBOX
 30
-399
+189
 45
-430
+220
 b
 25
 0.0
@@ -871,9 +894,9 @@ b
 
 TEXTBOX
 45
-419
+209
 60
-437
+227
 J
 11
 0.0
@@ -898,7 +921,7 @@ exposed-transmission-factor
 exposed-transmission-factor
 0
 100
-50.0
+90.0
 1
 1
 %
@@ -913,7 +936,7 @@ exposed-to-infected-rate
 exposed-to-infected-rate
 0
 100
-50.0
+80.0
 1
 1
 %
@@ -941,9 +964,9 @@ E
 
 SLIDER
 65
-235
+355
 260
-268
+388
 quarantined-to-isolated-rate
 quarantined-to-isolated-rate
 0
@@ -956,9 +979,9 @@ HORIZONTAL
 
 TEXTBOX
 30
-230
+350
 45
-261
+381
 k
 25
 0.0
@@ -966,9 +989,9 @@ k
 
 TEXTBOX
 45
-250
+370
 60
-268
+388
 Q
 11
 0.0
@@ -976,9 +999,9 @@ Q
 
 SLIDER
 65
-510
+550
 260
-543
+583
 lockdown-strictness
 lockdown-strictness
 0
@@ -988,6 +1011,28 @@ lockdown-strictness
 1
 %
 HORIZONTAL
+
+SWITCH
+585
+515
+720
+548
+show-contacts
+show-contacts
+1
+1
+-1000
+
+SWITCH
+65
+240
+260
+273
+quarantine-and-isolation
+quarantine-and-isolation
+1
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
