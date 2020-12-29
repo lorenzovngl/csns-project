@@ -27,34 +27,38 @@ contacts-own [
 ]
 
 globals [
+  chance-reproduce
   days
   ticks-per-day
   avg-degree-centrality
   std-dev-degree-centrality
+  deaths
+
+  ; Fixed parameters of the model
+  infection-rate                  ; a
+  exposed-transmission-factor     ; eps_E
+  exposed-to-infected-rate        ; k_E
+  quarantined-to-isolated-rate    ; k_Q
+  infected-leave-rate             ; b_I
+  isolated-leave-rate             ; b_J
+  infected-chance-recover         ; r_I
+  isolated-chance-recover         ; r_J
 ]
 
 to reset
   set number-people 150
 
-  set infection-rate 80
-  set exposed-transmission-factor 90
-  set exposed-to-infected-rate 80
-
   set quarantine-perfection-rate 70
-  set quarantines-per-tick-rate 50
-  set quarantined-to-isolated-rate 50
+  set quarantines-per-day-rate 50
 
   set isolation-perfection-rate 90
-  set isolations-per-tick-rate 50
-
-  set infected-chance-recover 60
-  set isolated-chance-recover 80
+  set isolations-per-day-rate 50
 
   set social-distance false
   set social-distance-perfection-rate 80
   set lockdown-strictness 0
 
-  set contact-time 20
+  set contact-time 14
 end
 
 to setup
@@ -62,6 +66,21 @@ to setup
 
   set days 0
   set ticks-per-day 5
+  set deaths 0
+  set chance-reproduce 0.5
+
+  ; Fixed parameters of the model
+  set infection-rate 95                  ; a
+  set exposed-transmission-factor 95     ; eps_E
+  set exposed-to-infected-rate 15        ; k_E
+
+  set quarantined-to-isolated-rate 10    ; k_Q
+
+  set infected-leave-rate 3              ; b_I
+  set isolated-leave-rate 1              ; b_J
+
+  set infected-chance-recover 50         ; r_I
+  set isolated-chance-recover 80         ; r_J
 
   setup-turtles
   update-display
@@ -103,19 +122,25 @@ to go
   ; once-per-day actions
   if ticks mod ticks-per-day = 0 [
     ask people [
-      ifelse exposed? [
-        if random-float 100 < exposed-to-infected-rate [
-          get-infected
+      ifelse susceptible? [
+        if random-float 100 < chance-reproduce [
+          hatch 1
         ]
       ] [
-        ifelse infected? [
-          if random-float 100 < infected-chance-recover [
-            get-recovered
+        ifelse exposed? [
+          if random-float 100 < exposed-to-infected-rate [
+            get-infected
           ]
         ] [
-          if isolated? [
-            if random-float 100 < isolated-chance-recover [
-              get-recovered
+          ifelse infected? [
+            if random-float 100 < infected-leave-rate [
+              get-recovered-or-dead
+            ]
+          ] [
+            if isolated? [
+              if random-float 100 < isolated-leave-rate [
+                get-recovered-or-dead
+              ]
             ]
           ]
         ]
@@ -199,21 +224,36 @@ to get-isolated ;; turtle procedure
   ]
 end
 
-to get-recovered ;; turtle procedure
+to get-recovered-or-dead ;; turtle procedure
   if not has_changed_class [
     if not infected? and not isolated? [
       show "Only infected or isolated people can become recovered"
       error -1
     ]
-    set infected? false
-    set isolated? false
-    set susceptible? true
-    set has_changed_class true
+    ifelse infected? [
+     ifelse random-float 100 < infected-chance-recover [
+        set infected? false
+        set susceptible? true
+        set has_changed_class true
+      ] [
+        set deaths deaths + 1
+        die
+      ]
+    ] [
+     ifelse random-float 100 < isolated-chance-recover [
+        set isolated? false
+        set susceptible? true
+        set has_changed_class true
+      ] [
+        set deaths deaths + 1
+        die
+      ]
+    ]
   ]
 end
 
 to quarantine-exposed
-  let max-quarantines-per-time count people with [exposed? and not quarantined? ] * quarantines-per-tick-rate / 100
+  let max-quarantines-per-time count people with [exposed? and not quarantined? ] * quarantines-per-day-rate / 100
   let counter 0
   ask people with [exposed? and not quarantined? ] [
     if counter < max-quarantines-per-time [
@@ -224,7 +264,7 @@ to quarantine-exposed
 end
 
 to isolate-infected
-  let max-isolate-per-time count people with [infected? and not isolated? ] * isolations-per-tick-rate / 100
+  let max-isolate-per-time count people with [infected? and not isolated? ] * isolations-per-day-rate / 100
   let counter 0
   ask people with [infected? and not isolated? ] [
     if counter < max-isolate-per-time [
@@ -268,9 +308,7 @@ end
 to update-display
   let maxdc (max [degree-centrality] of people)
   ask people [
-    if shape != turtle-shape [
-      set shape turtle-shape
-    ]
+    set shape "person"
     set color ifelse-value (turtle-color = "class") [
       ifelse-value susceptible? [ green ] [
         ifelse-value infected? [ red ] [
@@ -304,7 +342,7 @@ to move ;; turtle procedure
   lt random 100
 
   if not quarantined? and not isolated? [
-    if random-float 100 > lockdown-strictness [
+    if not lockdown or (lockdown and random-float 100 > lockdown-strictness) [
       ifelse not social-distance [
         fd 1
       ] [
@@ -384,41 +422,11 @@ GRAPHICS-WINDOW
 ticks
 30.0
 
-SLIDER
-65
-155
-260
-188
-infected-chance-recover
-infected-chance-recover
-0.0
-100
-60.0
-1.0
-1
-%
-HORIZONTAL
-
-SLIDER
-65
-52
-259
-85
-infection-rate
-infection-rate
-0.0
-99.0
-80.0
-1.0
-1
-%
-HORIZONTAL
-
 BUTTON
-355
-515
-425
-550
+165
+60
+260
+95
 NIL
 setup
 NIL
@@ -432,10 +440,10 @@ NIL
 1
 
 BUTTON
-505
-515
-576
-551
+166
+100
+261
+136
 NIL
 go
 T
@@ -450,9 +458,9 @@ NIL
 
 PLOT
 960
-10
-1410
-320
+265
+1470
+510
 Population
 days
 people
@@ -469,12 +477,13 @@ PENS
 "quarantined" 1.0 0 -13345367 true "" "plotxy days count people with [ quarantined? ]"
 "infected" 1.0 0 -2674135 true "" "plotxy days count people with [ infected? ]"
 "isolated" 1.0 0 -5825686 true "" "plotxy days count people with [ isolated? ]"
+"total" 1.0 0 -16777216 true "" "plotxy days count people"
 
 SLIDER
 65
-10
+15
 259
-43
+48
 number-people
 number-people
 10
@@ -487,9 +496,9 @@ HORIZONTAL
 
 MONITOR
 1210
-325
+515
 1320
-370
+560
 I - Infected (%)
 (count people with [ infected? ] / count people) * 100
 1
@@ -497,31 +506,21 @@ I - Infected (%)
 11
 
 MONITOR
-960
-375
-1072
-420
+830
+515
+945
+560
 Days
 ticks / ticks-per-day
 1
 1
 11
 
-CHOOSER
-730
-515
-822
-560
-turtle-shape
-turtle-shape
-"person" "circle"
-0
-
 BUTTON
-280
-515
-350
-550
+65
+60
+160
+95
 NIL
 reset
 NIL
@@ -535,10 +534,10 @@ NIL
 1
 
 BUTTON
-430
-515
-500
-550
+65
+100
+160
+135
 go once
 go
 NIL
@@ -552,10 +551,10 @@ NIL
 1
 
 SLIDER
-585
-550
-720
-583
+480
+515
+675
+548
 contact-time
 contact-time
 0
@@ -568,9 +567,9 @@ HORIZONTAL
 
 PLOT
 960
-430
-1255
-560
+10
+1470
+255
 Degree centrality
 NIL
 NIL
@@ -586,10 +585,10 @@ PENS
 "Std. dev." 1.0 0 -7500403 true "" "plotxy days std-dev-degree-centrality"
 
 MONITOR
-1265
-430
-1415
-475
+1330
+515
+1465
+560
 Average degree centrality
 avg-degree-centrality
 1
@@ -597,10 +596,10 @@ avg-degree-centrality
 11
 
 MONITOR
-1265
-485
-1415
-530
+1330
+565
+1465
+610
 Std. dev. of degree centrality
 std-dev-degree-centrality
 1
@@ -608,9 +607,9 @@ std-dev-degree-centrality
 11
 
 CHOOSER
-830
+705
 515
-945
+820
 560
 turtle-color
 turtle-color
@@ -619,9 +618,9 @@ turtle-color
 
 SWITCH
 65
-480
+345
 260
-513
+378
 social-distance
 social-distance
 1
@@ -630,9 +629,9 @@ social-distance
 
 SLIDER
 65
-515
+380
 260
-548
+413
 social-distance-perfection-rate
 social-distance-perfection-rate
 0
@@ -645,9 +644,9 @@ HORIZONTAL
 
 SLIDER
 65
-280
+185
 260
-313
+218
 quarantine-perfection-rate
 quarantine-perfection-rate
 0
@@ -660,9 +659,9 @@ HORIZONTAL
 
 SLIDER
 65
-400
 260
-433
+260
+293
 isolation-perfection-rate
 isolation-perfection-rate
 0
@@ -675,19 +674,9 @@ HORIZONTAL
 
 TEXTBOX
 30
-80
-70
-111
-ε
-25
-0.0
-1
-
-TEXTBOX
-30
-280
+185
 50
-311
+216
 ε
 25
 0.0
@@ -695,9 +684,9 @@ TEXTBOX
 
 TEXTBOX
 30
-395
+255
 65
-426
+286
 ε
 25
 0.0
@@ -705,19 +694,9 @@ TEXTBOX
 
 TEXTBOX
 45
-100
-65
-118
-E
-11
-0.0
-1
-
-TEXTBOX
-45
-300
+205
 60
-318
+223
 Q
 11
 0.0
@@ -725,9 +704,9 @@ Q
 
 TEXTBOX
 45
-415
+275
 60
-433
+293
 J
 11
 0.0
@@ -735,9 +714,9 @@ J
 
 MONITOR
 960
-325
+515
 1075
-370
+560
 S - Susceptible (%)
 (count people with [ not susceptible? ] / count people) * 100
 1
@@ -746,9 +725,9 @@ S - Susceptible (%)
 
 MONITOR
 1085
-325
+515
 1200
-370
+560
 E - Exposed (%)
 (count people with [ exposed? ] / count people) * 100
 1
@@ -757,9 +736,9 @@ E - Exposed (%)
 
 MONITOR
 1085
-375
+565
 1200
-420
+610
 Q - Quarantined (%)
 (count people with [ quarantined? ] / count people) * 100
 1
@@ -768,9 +747,9 @@ Q - Quarantined (%)
 
 MONITOR
 1210
-375
+565
 1320
-420
+610
 J - Isolated (%)
 (count people with [ isolated? ] / count people) * 100
 1
@@ -779,196 +758,11 @@ J - Isolated (%)
 
 SLIDER
 65
-315
-260
-348
-quarantines-per-tick-rate
-quarantines-per-tick-rate
-0
-100
-50.0
-1
-1
-%
-HORIZONTAL
-
-TEXTBOX
-30
-310
-45
-341
-c
-25
-0.0
-1
-
-TEXTBOX
-45
-330
-60
-348
-Q
-11
-0.0
-1
-
-SLIDER
-65
-435
-260
-468
-isolations-per-tick-rate
-isolations-per-tick-rate
-0
-100
-50.0
-1
-1
-%
-HORIZONTAL
-
-TEXTBOX
-30
-430
-55
-461
-c
-25
-0.0
-1
-
-TEXTBOX
-45
-450
-60
-468
-J
-11
-0.0
-1
-
-SLIDER
-65
-189
-260
-222
-isolated-chance-recover
-isolated-chance-recover
-0
-100
-80.0
-1
-1
-%
-HORIZONTAL
-
-TEXTBOX
-30
-154
-45
-185
-b
-25
-0.0
-1
-
-TEXTBOX
-45
-179
-60
-197
-I
-11
-0.0
-1
-
-TEXTBOX
-30
-189
-45
 220
-b
-25
-0.0
-1
-
-TEXTBOX
-45
-209
-60
-227
-J
-11
-0.0
-1
-
-TEXTBOX
-30
-50
-45
-81
-a
-25
-0.0
-1
-
-SLIDER
-65
-85
 260
-118
-exposed-transmission-factor
-exposed-transmission-factor
-0
-100
-90.0
-1
-1
-%
-HORIZONTAL
-
-SLIDER
-65
-120
-260
-153
-exposed-to-infected-rate
-exposed-to-infected-rate
-0
-100
-80.0
-1
-1
-%
-HORIZONTAL
-
-TEXTBOX
-30
-115
-55
-146
-k
-25
-0.0
-1
-
-TEXTBOX
-45
-135
-60
-153
-E
-11
-0.0
-1
-
-SLIDER
-65
-355
-260
-388
-quarantined-to-isolated-rate
-quarantined-to-isolated-rate
+253
+quarantines-per-day-rate
+quarantines-per-day-rate
 0
 100
 50.0
@@ -979,19 +773,19 @@ HORIZONTAL
 
 TEXTBOX
 30
-350
+215
 45
-381
-k
+246
+c
 25
 0.0
 1
 
 TEXTBOX
 45
-370
+235
 60
-388
+253
 Q
 11
 0.0
@@ -999,9 +793,44 @@ Q
 
 SLIDER
 65
-550
+295
 260
-583
+328
+isolations-per-day-rate
+isolations-per-day-rate
+0
+100
+50.0
+1
+1
+%
+HORIZONTAL
+
+TEXTBOX
+30
+290
+55
+321
+c
+25
+0.0
+1
+
+TEXTBOX
+45
+315
+60
+333
+J
+11
+0.0
+1
+
+SLIDER
+65
+470
+260
+503
 lockdown-strictness
 lockdown-strictness
 0
@@ -1013,9 +842,9 @@ lockdown-strictness
 HORIZONTAL
 
 SWITCH
-585
+280
 515
-720
+475
 548
 show-contacts
 show-contacts
@@ -1025,14 +854,47 @@ show-contacts
 
 SWITCH
 65
-240
+145
 260
-273
+178
 quarantine-and-isolation
 quarantine-and-isolation
 1
 1
 -1000
+
+MONITOR
+830
+565
+945
+610
+Deaths per day
+deaths / days
+2
+1
+11
+
+SWITCH
+65
+435
+260
+468
+lockdown
+lockdown
+1
+1
+-1000
+
+MONITOR
+960
+565
+1075
+610
+Deaths
+deaths
+0
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
