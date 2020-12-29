@@ -2,6 +2,7 @@
 \usepackage{tikz}
 \usepackage{float}
 \usepackage{amsmath}
+\usepackage{graphicx}
 
 \usetikzlibrary{calc}
 \usepackage[
@@ -263,11 +264,93 @@ In this model I consider to evaluate every situation analyzing the graph generat
 I use the definition of \textit{degree centrality} to have a clear indicator of the connections that each person create during simulation. Beacause of degree centrality is a node-based measure, I used the average of all the degree centrality to get a value to evaluate the entire graph. An auxiliary indicator of standard deviation for this average is provided. \\
 If a control action on the population reduces the value of \textit{average degree centrality}, it means that the action is effective.
 
-
-
-
 \section{Results}\label{results}
-In this section we describe the results.
+In this section I describe the results obtained with simulations on this model. Differences between simulations are about managing control parameters in order to watch how the simulation evolves with different actions.\\
+The size of the population at the beginning of the simulation is fixed at 150 and the duration of the simulation is 365 days.
+
+\subsection{Virus diffusion without actions}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{results/no_actions_population.png}
+	\includegraphics[width=\textwidth]{results/no_actions_degree_centrality.png}
+	\caption{Result of the simulations without actions to control the diffusion of the virus. Population has been reduced by \textbf{96\%} and \textbf{147} people were dead.}
+\end{figure}
+
+\subsection{Using only quarantine and isolation}
+Simulation is carried out with these settings:
+\begin{itemize}
+\item \texttt{quarantine-perfection-rate} = 70
+\item \texttt{quarantines-per-day-rate} = 10
+\item \texttt{isolation-perfection-rate} = 90
+\item \texttt{isolations-per-day-rate} = 10
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+	\node[inner sep=0pt] at (0,0) {\includegraphics[width=\textwidth]{results/quarantine_isolation_population.png}};
+	\node[text width=4cm,align=left] (label) at (0,1) {Activation of quarantine and isolation};
+	\draw [->] (label.west) -| (-3.1,-1);
+    \end{tikzpicture}
+    \begin{tikzpicture}
+	\node[inner sep=0pt] at (0,0) {\includegraphics[width=\textwidth]{results/quarantine_isolation_degree_centrality.png}};
+	\node[text width=4cm,align=left] (label) at (0,1) {Activation of quarantine and isolation};
+	\draw [->] (label.west) -| (-3.2,-0.50);
+    \end{tikzpicture}
+	\caption{Result of the simulations where on the 100\textsuperscript{th} day quarantine and isolation has been activated for exposed and infected. Population has been reduced by \textbf{66.7\%} and \textbf{122} people were dead.}
+\end{figure}
+
+\subsection{Using only social distance and lockdown}
+Simulation is carried out with these settings:
+\begin{itemize}
+\item \texttt{social-distance-perfection-rate} = 70
+\item \texttt{lockdown-strictness} = 90
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+	\node[inner sep=0pt] at (0,0) {\includegraphics[width=\textwidth]{results/social_distance_lockdown_population.png}};
+	\node[text width=2.5cm,align=left] (labela) at (0,1) {Activation of social distance};
+	\node[text width=2.5cm,align=left] (labelb) at (0,0) {Activation of lockdown};
+	\draw [->] (labela.west) -| (-4.3,0.2);
+	\draw [->] (labelb.west) -| (-3.3,-0.8);
+    \end{tikzpicture}
+    \begin{tikzpicture}
+	\node[inner sep=0pt] at (0,0) {\includegraphics[width=\textwidth]{results/social_distance_lockdown_degree_centrality.png}};
+	\node[text width=2.5cm,align=left] (labela) at (0,1) {Activation of social distance};
+	\node[text width=2.5cm,align=left] (labelb) at (0,0) {Activation of lockdown};
+	\draw [->] (labela.north) -- (0, 2) -| (-4.3,1.6);
+	\draw [->] (labelb.west) -| (-3.2,-1.5);
+    \end{tikzpicture}
+	\caption{Result of the simulations where on the 50\textsuperscript{th} day social distance has been activated for exposed and infected and on the 100\textsuperscript{th} day lockdown has been activated. Population has been reduced by \textbf{80.7\%} and \textbf{163} people were dead.}
+\end{figure}
+
+\subsection{Combining quarantine and isolation with social distance and lockdown}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+	\node[inner sep=0pt] at (0,0) {\includegraphics[width=\textwidth]{results/all_methods_population.png}};
+	\node[text width=2.5cm,align=left] (labela) at (0,2) {Activation of social distance};
+	\node[text width=3.5cm,align=left] (labelb) at (0,1) {Activation of quarantine and isolation};
+	\node[text width=2.5cm,align=left] (labelc) at (0,0) {Activation of lockdown};
+	\draw [->] (labela.west) -| (-4.3,0.2);
+	\draw [->] (labelb.west) -| (-3.2,-0.8);
+	\draw [->] (labelc.west) -| (-2.1,-0.8);
+    \end{tikzpicture}
+    \begin{tikzpicture}
+	\node[inner sep=0pt] at (0,0) {\includegraphics[width=\textwidth]{results/all_methods_degree_centrality.png}};
+	\node[text width=2.5cm,align=left] (labela) at (0,1) {Activation of social distance};
+	\node[text width=3.5cm,align=left] (labelb) at (0,0) {Activation of quarantine and isolation};
+	\node[text width=3.5cm,align=left] (labelc) at (0,-1) {Activation of lockdown};
+	\draw [->] (labela.north) -- (0, 2) -| (-4.3,0.8);
+	\draw [->] (labelb.west) -| (-3.2,-1.8);
+	\draw [->] (labelc.west) -| (-2.1,-1.9);
+    \end{tikzpicture}
+	\caption{Result of the simulations where on the 50\textsuperscript{th} day social distance has been activated, on the 100\textsuperscript{th} day quarantine and isolations for exposed and infected has been activated and on the 150\textsuperscript{th} day lockdown has been activated. Population has been reduced by \textbf{39.3\%} and \textbf{116} people were dead.}
+\end{figure}
 
 \section{Conclusions}\label{conclusions}
 We worked hard, and achieved very little.
