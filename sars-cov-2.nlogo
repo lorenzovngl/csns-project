@@ -33,6 +33,8 @@ globals [
   avg-degree-centrality
   std-dev-degree-centrality
   deaths
+  time-limited-computation?
+  days-limit
 
   ; Fixed parameters of the model
   infection-rate                  ; a
@@ -68,6 +70,8 @@ to setup
   set ticks-per-day 5
   set deaths 0
   set chance-reproduce 0.5
+  set time-limited-computation? true
+  set days-limit 365
 
   ; Fixed parameters of the model
   set infection-rate 95                  ; a
@@ -442,10 +446,10 @@ NIL
 BUTTON
 166
 100
-261
+258
 136
-NIL
 go
+ifelse time-limited-computation? [\n  if days <= days-limit [ go ]\n] [ go]
 T
 1
 T
@@ -506,13 +510,13 @@ I - Infected (%)
 11
 
 MONITOR
-830
+705
 515
-945
+820
 560
 Days
 ticks / ticks-per-day
-1
+0
 1
 11
 
@@ -551,9 +555,9 @@ NIL
 1
 
 SLIDER
-480
+265
 515
-675
+460
 548
 contact-time
 contact-time
@@ -607,9 +611,9 @@ std-dev-degree-centrality
 11
 
 CHOOSER
-705
+470
 515
-820
+585
 560
 turtle-color
 turtle-color
@@ -623,7 +627,7 @@ SWITCH
 378
 social-distance
 social-distance
-1
+0
 1
 -1000
 
@@ -765,7 +769,7 @@ quarantines-per-day-rate
 quarantines-per-day-rate
 0
 100
-50.0
+10.0
 1
 1
 %
@@ -800,7 +804,7 @@ isolations-per-day-rate
 isolations-per-day-rate
 0
 100
-50.0
+10.0
 1
 1
 %
@@ -835,16 +839,16 @@ lockdown-strictness
 lockdown-strictness
 0
 100
-0.0
+90.0
 1
 1
 %
 HORIZONTAL
 
 SWITCH
-280
+65
 515
-475
+260
 548
 show-contacts
 show-contacts
@@ -859,7 +863,7 @@ SWITCH
 178
 quarantine-and-isolation
 quarantine-and-isolation
-1
+0
 1
 -1000
 
@@ -881,18 +885,29 @@ SWITCH
 468
 lockdown
 lockdown
-1
+0
 1
 -1000
+
+MONITOR
+830
+515
+945
+560
+Deaths
+deaths
+0
+1
+11
 
 MONITOR
 960
 565
 1075
 610
-Deaths
-deaths
-0
+Population (%)
+(count people) * 100 / number-people
+1
 1
 11
 
