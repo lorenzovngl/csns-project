@@ -3,6 +3,7 @@
 \usepackage{float}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{subcaption}
 
 \usetikzlibrary{calc}
 \usepackage[
@@ -27,7 +28,7 @@ A.Y. 2020-2021}
 {\def\addcontentsline#1#2#3{}\maketitle}
 
 \begin{abstract}
-This is the paper's abstract \ldots
+The SARS-CoV-2 outbreak forced the world population to face a new disease for which there was not a vaccine and governments had to use some alternative actions to limit the virus spreading. Predicting the impact of an action on the population is very important before making it effective and we need mathematical models to do that. This paper shows the implementation of a virus outbreak in NetLogo and it provides actions to limit the spreading: quarantine, isolation, social distance and lockdown. Every action can be enable or disable and it has parameters that can be set. A study on how these actions can help to fight and slow down the virus propagation is described and results that prove the effectiveness of these containment measures are shown.
 \end{abstract}
 
 \begingroup
@@ -38,17 +39,16 @@ This is the paper's abstract \ldots
 \endgroup
 
 \section{Introduction}
+This paper describes the process to build and study a network model that simulates the outbreak of the new SARS-CoV-2 virus using NetLogo. In addition, the model provides methods to control the spreading. To achieve the challenge, we must consider a situation in which we have a crowd of people that have contacts with each other, where there are some infected individuals that cause the spreading of the infection. Also some kind of quarantine and isolations are needed for who become infected. Finally we need some population-size actions like social distancing and lockdown, beacause these are the most used and effective actions that have been used by governments to reduce the impact of the virus on the population.\\
+Our model provides all the features mentioned above with different paramaters that can be set in order to set the strenghtness of the containment measures.\\
+Once we have found a setting of parameters that causes, more or less, the same effects on the population as the real virus did, we focus our experiments in study the impact of the containment measures on the virus effects on the population. Results we got clearly shows that these actions are effective and can save lives.
 
-\section{Previous work}\label{previous work}
-In the literature there is some works that I used to plan this project. The concepts of model that I used derived from a book written by Brauer et al., that shows the models that can be used in a simulation of virus spreading in a population \cite{brauer}. An article from Giordano et al. explain how to model the intervetions in the population to fight the COVID-19 outbreak \cite{giordano}, but it's too complex for the purposes of this project.\\
-The Netlogo \cite{netlogo} models library offers a program that simulate the virus spreading in a population \cite{netlogo-virus}, it's very simple and general-purpose, but it was a good point to start the building of the model of this project.
+\section{Preliminaries}
+The literature about virus diffusion is very rich because 2020 has been a year in which the researchers need to discover something about the new SARS-CoV-2 virus and the COVID-19 disease \cite{singhal}. Models to represent situations like this or other diseases like flu were developed by Brauer et al. \cite{brauer}; one of these, the SEIQRJ model, is suitable to study the SARS-CoV-2 pandemic in the population. An article from Giordano et al. explain how to model the intervetions in the population to fight the COVID-19 outbreak \cite{giordano}, but it's too complex for the purposes of this project. The Netlogo \cite{netlogo} models library offers an implementation of the SIR model \cite{netlogo-virus}, it's very simple and general-purpose, but it was a good point to start the implementation of a SEIQJR model.\\ 
+In this project, the modelling phase started from the SEIQJR model shown by by Brauer et al. and the implementation phase started from the Virus model from the NetLogo library.
 
 \section{Modeling}
 In this section I will explain the process of thinking which models are better to use for the aim of the project and how I modified the ones from \cite{brauer}.
-
-\subsection{Achievements}
-The final achievement of this project is to build and study a network model that simulates the outbreak of the new SARS-CoV-2 virus. To do that, we must consider a situation in which we have a crowd of people that have contacts with each other, where there are some infected individuals that cause the spreading of the infection. Also some kind of quarantine and isolations are needed for who become infected. \\
-We need a model similar to the SEIQJR model. Let's start from the simplest model, the SIS, and then add new classes to make a more complex model.
 
 \subsection{The SIS model}
 The SIS model is the simplest model in which there is a class of susceptible people ($S$) that, if one get the infection, goes to the infected class ($I$). Then, when infected people get recovered they returned to the susceptible class.
@@ -265,20 +265,28 @@ I use the definition of \textit{degree centrality} to have a clear indicator of 
 If a control action on the population reduces the value of \textit{average degree centrality}, it means that the action is effective.
 
 \section{Results}\label{results}
-In this section I describe the results obtained with simulations on this model. Differences between simulations are about managing control parameters in order to watch how the simulation evolves with different actions.\\
+In this section I describe the results obtained making simulations with this model. Differences between simulations are about managing control parameters in order to watch how the simulation evolves with different actions.\\
 The size of the population at the beginning of the simulation is fixed at 150 and the duration of the simulation is 365 days.
 
 \subsection{Virus diffusion without actions}
+The first thing to do to have an idea of what happens is to watch the behavior of the model if nothing action to fight the virus is taken. As we can see in fig. \ref{fig:noactions-a} the lethality of the virus makes an unacceptable impact on the population, reducing it to few individuals. The reduction of the \textit{average degree centrality} (fig. \ref{fig:noactions-b}) is only due to the decrease of the population.
 
-\begin{figure}[H]
+\begin{figure}
+	\begin{subfigure}{\textwidth}
 	\centering
-	\includegraphics[width=\textwidth]{results/no_actions_population.png}
-	\includegraphics[width=\textwidth]{results/no_actions_degree_centrality.png}
+		\includegraphics[width=0.9\textwidth]{results/no_actions_population.png}
+		\caption{Evolution of the population divided by class.} \label{fig:noactions-a}
+	\end{subfigure}
+	\begin{subfigure}{\textwidth}
+	\centering
+		\includegraphics[width=0.9\textwidth]{results/no_actions_degree_centrality.png}
+		\caption{Evolution of the values of degree centrality.} \label{fig:noactions-b}
+	\end{subfigure}
 	\caption{Result of the simulations without actions to control the diffusion of the virus. Population has been reduced by \textbf{96\%} and \textbf{147} people were dead.}
 \end{figure}
 
 \subsection{Using only quarantine and isolation}
-Simulation is carried out with these settings:
+Let's see how using quarantine and isolation will change the virus diffusion and thus the results after a simulation. These measure prevent the people to move but not to making contacts, even if with a lower probability. We can see in fig. \ref{fig:quar-isol-a} the huge impact that these measures make in the simulation, saving the 29,3\% of the population with respect to the previous situation. In fig. \ref{fig:noactions-b} we can se a visible reduction of contacts between people. Simulation is carried out with these settings:
 \begin{itemize}
 \item \texttt{quarantine-perfection-rate} = 70
 \item \texttt{quarantines-per-day-rate} = 10
@@ -286,52 +294,79 @@ Simulation is carried out with these settings:
 \item \texttt{isolations-per-day-rate} = 10
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}
+	\begin{subfigure}{\textwidth}
 	\centering
-	\begin{tikzpicture}
+	\resizebox{0.9\textwidth}{!}{
+		\begin{tikzpicture}
 	\node[inner sep=0pt] at (0,0) {\includegraphics[width=\textwidth]{results/quarantine_isolation_population.png}};
 	\node[text width=4cm,align=left] (label) at (0,1) {Activation of quarantine and isolation};
 	\draw [->] (label.west) -| (-3.1,-1);
     \end{tikzpicture}
-    \begin{tikzpicture}
+    }
+		\caption{Evolution of the population divided by class.} \label{fig:quar-isol-a}
+	\end{subfigure}
+		\begin{subfigure}{\textwidth}
+		\centering
+		\resizebox{0.9\textwidth}{!}{
+		\begin{tikzpicture}
 	\node[inner sep=0pt] at (0,0) {\includegraphics[width=\textwidth]{results/quarantine_isolation_degree_centrality.png}};
 	\node[text width=4cm,align=left] (label) at (0,1) {Activation of quarantine and isolation};
 	\draw [->] (label.west) -| (-3.2,-0.50);
     \end{tikzpicture}
+    }
+		\caption{Evolution of the population divided by class.} \label{fig:quar-isol-b}
+	\end{subfigure}
 	\caption{Result of the simulations where on the 100\textsuperscript{th} day quarantine and isolation has been activated for exposed and infected. Population has been reduced by \textbf{66.7\%} and \textbf{122} people were dead.}
 \end{figure}
 
 \subsection{Using only social distance and lockdown}
-Simulation is carried out with these settings:
+Before combining all the control measures available, let's see the impact of social distance and lockdown. In the graph of population in \ref{fig:dist-lock-a} the effect is not particularly noticeable, but as we can see in \ref{fig:dist-lock-b} there is an immediate drop of the number of contacts when social distance is activated. A similar thing happend with the activation of lockdown. Simulation is carried out with these settings:
 \begin{itemize}
 \item \texttt{social-distance-perfection-rate} = 70
 \item \texttt{lockdown-strictness} = 90
 \end{itemize}
 
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
+Result shows if there is the need to choose to use quarantine and isolation or social distance and lockdown, the first option is the best beacause is able to save more lives.
+
+\begin{figure}
+		\begin{subfigure}{\textwidth}
+		\centering
+		\resizebox{0.9\textwidth}{!}{
+		\begin{tikzpicture}
 	\node[inner sep=0pt] at (0,0) {\includegraphics[width=\textwidth]{results/social_distance_lockdown_population.png}};
 	\node[text width=2.5cm,align=left] (labela) at (0,1) {Activation of social distance};
 	\node[text width=2.5cm,align=left] (labelb) at (0,0) {Activation of lockdown};
 	\draw [->] (labela.west) -| (-4.3,0.2);
 	\draw [->] (labelb.west) -| (-3.3,-0.8);
     \end{tikzpicture}
-    \begin{tikzpicture}
+    }
+		\caption{Evolution of the population divided by class.} \label{fig:dist-lock-a}
+	\end{subfigure}
+			\begin{subfigure}{\textwidth}
+			\centering
+			\resizebox{0.9\textwidth}{!}{
+		\begin{tikzpicture}
 	\node[inner sep=0pt] at (0,0) {\includegraphics[width=\textwidth]{results/social_distance_lockdown_degree_centrality.png}};
 	\node[text width=2.5cm,align=left] (labela) at (0,1) {Activation of social distance};
 	\node[text width=2.5cm,align=left] (labelb) at (0,0) {Activation of lockdown};
 	\draw [->] (labela.north) -- (0, 2) -| (-4.3,1.6);
 	\draw [->] (labelb.west) -| (-3.2,-1.5);
     \end{tikzpicture}
+    }
+		\caption{Evolution of the population divided by class.} \label{fig:dist-lock-b}
+	\end{subfigure}
 	\caption{Result of the simulations where on the 50\textsuperscript{th} day social distance has been activated for exposed and infected and on the 100\textsuperscript{th} day lockdown has been activated. Population has been reduced by \textbf{80.7\%} and \textbf{163} people were dead.}
 \end{figure}
 
 \subsection{Combining quarantine and isolation with social distance and lockdown}
+Finally, let's see what happens if all these measures are activated progressively. Fig. \ref{fig:comb} shows the final results: after the year elapsed in the simulation, the population number is higher and the number of deaths is lower with respect to the previous experiments. We can notice in this case something that didn't happens before: the population is able to come back to grow.
 
-\begin{figure}[H]
+\begin{figure}
+	\begin{subfigure}{\textwidth}
 	\centering
-	\begin{tikzpicture}
+	\resizebox{0.9\textwidth}{!}{
+		\begin{tikzpicture}
 	\node[inner sep=0pt] at (0,0) {\includegraphics[width=\textwidth]{results/all_methods_population.png}};
 	\node[text width=2.5cm,align=left] (labela) at (0,2) {Activation of social distance};
 	\node[text width=3.5cm,align=left] (labelb) at (0,1) {Activation of quarantine and isolation};
@@ -340,7 +375,13 @@ Simulation is carried out with these settings:
 	\draw [->] (labelb.west) -| (-3.2,-0.8);
 	\draw [->] (labelc.west) -| (-2.1,-0.8);
     \end{tikzpicture}
-    \begin{tikzpicture}
+    }
+		\caption{Evolution of the population divided by class.} \label{fig:comb-a}
+		\end{subfigure}
+		\begin{subfigure}{\textwidth}
+		\centering
+		\resizebox{0.9\textwidth}{!}{
+			\begin{tikzpicture}
 	\node[inner sep=0pt] at (0,0) {\includegraphics[width=\textwidth]{results/all_methods_degree_centrality.png}};
 	\node[text width=2.5cm,align=left] (labela) at (0,1) {Activation of social distance};
 	\node[text width=3.5cm,align=left] (labelb) at (0,0) {Activation of quarantine and isolation};
@@ -349,11 +390,19 @@ Simulation is carried out with these settings:
 	\draw [->] (labelb.west) -| (-3.2,-1.8);
 	\draw [->] (labelc.west) -| (-2.1,-1.9);
     \end{tikzpicture}
+    }
+		\caption{Evolution of the population divided by class.} \label{fig:comb-a}
+		\end{subfigure}
 	\caption{Result of the simulations where on the 50\textsuperscript{th} day social distance has been activated, on the 100\textsuperscript{th} day quarantine and isolations for exposed and infected has been activated and on the 150\textsuperscript{th} day lockdown has been activated. Population has been reduced by \textbf{39.3\%} and \textbf{116} people were dead.}
+	\label{fig:comb}
 \end{figure}
 
-\section{Conclusions}\label{conclusions}
-We worked hard, and achieved very little.
+\newpage
+\section{Conclusions}
+The model shown in this paper represents a pretty accurate simulation to reproduce the SARS-CoV-2 outbreak and results shows that the actions that were carried out in the real world to fight this virus are effective also in this model. Each of the possibile action that can be used (quarantine, isolation, social distance, lockdown) bring benefits to the final results and, if all of them are used toghether, the results are even better.
+
+\subsection*{Further directions}
+Two interesting things can be done to carry on this work. The first if to try different setting of the parameters to watch how a change in a parameter value changes the behavior of the model; the second is related to the first and is about to find possible tipping point, i.e. when a little change in a parameter caused a big change in the simulation.
 
 \printbibliography[title={References}]
 

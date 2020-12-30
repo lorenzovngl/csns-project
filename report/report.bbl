@@ -17,6 +17,30 @@
 \endgroup
 
 \datalist[entry]{none/global//global/global}
+  \entry{singhal}{article}{}
+    \name{author}{1}{}{%
+      {{hash=ST}{%
+         family={Singhal},
+         familyi={S\bibinitperiod},
+         given={Tanu},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{ST1}
+    \strng{fullhash}{ST1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \verb{doi}
+    \verb 10.1007/s12098-020-03263-6
+    \endverb
+    \field{pages}{281\bibrangedash 286}
+    \field{title}{A Review of Coronavirus Disease-2019 (COVID-19)}
+    \field{volume}{87}
+    \field{journaltitle}{Indian journal of pediatrics}
+    \field{month}{04}
+    \field{year}{2020}
+  \endentry
+
   \entry{brauer}{book}{}
     \name{author}{3}{}{%
       {{hash=BF}{%

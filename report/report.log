@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.11) (preloaded format=pdflatex 2020.11.11)  29 DEC 2020 18:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.11) (preloaded format=pdflatex 2020.11.11)  30 DEC 2020 18:01
 entering extended mode
 **./report.tex
 (report.tex
@@ -585,6 +585,43 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
 LaTeX Info: Redefining \[ on input line 2923.
 LaTeX Info: Redefining \] on input line 2924.
 )
+(C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/latex/caption\subca
+ption.sty
+Package: subcaption 2020/10/07 v1.3j Sub-captions (AR)
+
+(C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/latex/caption\capti
+on.sty
+Package: caption 2020/10/26 v3.5g Customizing captions (AR)
+
+(C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/latex/caption\capti
+on3.sty
+Package: caption3 2020/10/21 v2.2e caption3 kernel (AR)
+\captionmargin=\dimen278
+\captionmargin@=\dimen279
+\captionwidth=\dimen280
+\caption@tempdima=\dimen281
+\caption@indent=\dimen282
+\caption@parindent=\dimen283
+\caption@hangindent=\dimen284
+Package caption Info: Unknown document class (or package),
+(caption)             standard defaults will be used.
+Package caption Info: \@makecaption = \long macro:#1#2->\small \vskip \abovecap
+tionskip \sbox \@tempboxa {{\bfseries #1.} #2}\ifdim \wd \@tempboxa >\hsize {\b
+fseries #1.} #2\par \else \global \@minipagefalse \hb@xt@ \hsize {\hfil \box \@
+tempboxa \hfil }\fi \vskip \belowcaptionskip  on input line 1139.
+)
+
+Package caption Warning: Unknown document class (or package),
+(caption)                standard defaults will be used.
+See the caption package documentation for explanation.
+
+\c@caption@flags=\count313
+\c@continuedfloat=\count314
+Package caption Info: float package is loaded.
+)
+\c@subfigure=\count315
+\c@subtable=\count316
+)
 (C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/generic/pgf/fronten
 dlayer/tikz/libraries\tikzlibrarycalc.code.tex
 File: tikzlibrarycalc.code.tex 2020/10/01 v3.1.6a (3.1.6a)
@@ -617,7 +654,7 @@ Package pdftexcmds Info: \pdfdraftmode found.
 (C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoo
 lbox.sty
 Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count313
+\etb@tempcnta=\count317
 )
 (C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvo
 ptions.sty
@@ -630,7 +667,7 @@ Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
 (C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/latex/logreq\logreq
 .sty
 Package: logreq 2010/08/04 v1.0 xml request logger
-\lrq@indent=\count314
+\lrq@indent=\count318
 
 (C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/latex/logreq\logreq
 .def
@@ -644,48 +681,48 @@ Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-\c@tabx@nest=\count315
-\c@listtotal=\count316
-\c@listcount=\count317
-\c@liststart=\count318
-\c@liststop=\count319
-\c@citecount=\count320
-\c@citetotal=\count321
-\c@multicitecount=\count322
-\c@multicitetotal=\count323
-\c@instcount=\count324
-\c@maxnames=\count325
-\c@minnames=\count326
-\c@maxitems=\count327
-\c@minitems=\count328
-\c@citecounter=\count329
-\c@maxcitecounter=\count330
-\c@savedcitecounter=\count331
-\c@uniquelist=\count332
-\c@uniquename=\count333
-\c@refsection=\count334
-\c@refsegment=\count335
-\c@maxextratitle=\count336
-\c@maxextratitleyear=\count337
-\c@maxextraname=\count338
-\c@maxextradate=\count339
-\c@maxextraalpha=\count340
-\c@abbrvpenalty=\count341
-\c@highnamepenalty=\count342
-\c@lownamepenalty=\count343
-\c@maxparens=\count344
-\c@parenlevel=\count345
-\blx@tempcnta=\count346
-\blx@tempcntb=\count347
-\blx@tempcntc=\count348
-\blx@maxsection=\count349
-\blx@maxsegment@0=\count350
-\blx@notetype=\count351
-\blx@parenlevel@text=\count352
-\blx@parenlevel@foot=\count353
-\blx@sectionciteorder@0=\count354
-\blx@entrysetcounter=\count355
-\blx@biblioinstance=\count356
+\c@tabx@nest=\count319
+\c@listtotal=\count320
+\c@listcount=\count321
+\c@liststart=\count322
+\c@liststop=\count323
+\c@citecount=\count324
+\c@citetotal=\count325
+\c@multicitecount=\count326
+\c@multicitetotal=\count327
+\c@instcount=\count328
+\c@maxnames=\count329
+\c@minnames=\count330
+\c@maxitems=\count331
+\c@minitems=\count332
+\c@citecounter=\count333
+\c@maxcitecounter=\count334
+\c@savedcitecounter=\count335
+\c@uniquelist=\count336
+\c@uniquename=\count337
+\c@refsection=\count338
+\c@refsegment=\count339
+\c@maxextratitle=\count340
+\c@maxextratitleyear=\count341
+\c@maxextraname=\count342
+\c@maxextradate=\count343
+\c@maxextraalpha=\count344
+\c@abbrvpenalty=\count345
+\c@highnamepenalty=\count346
+\c@lownamepenalty=\count347
+\c@maxparens=\count348
+\c@parenlevel=\count349
+\blx@tempcnta=\count350
+\blx@tempcntb=\count351
+\blx@tempcntc=\count352
+\blx@maxsection=\count353
+\blx@maxsegment@0=\count354
+\blx@notetype=\count355
+\blx@parenlevel@text=\count356
+\blx@parenlevel@foot=\count357
+\blx@sectionciteorder@0=\count358
+\blx@entrysetcounter=\count359
+\blx@biblioinstance=\count360
 \labelnumberwidth=\skip54
 \labelalphawidth=\skip55
 \biblabelsep=\skip56
@@ -697,9 +734,9 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 \blx@bcfin=\read3
 \blx@bcfout=\write4
 \blx@langwohyphens=\language79
-\c@mincomprange=\count357
-\c@maxcomprange=\count358
-\c@mincompwidth=\count359
+\c@mincomprange=\count361
+\c@maxcomprange=\count362
+\c@mincompwidth=\count363
 Package biblatex Info: Trying to load biblatex default data model...
 Package biblatex Info: ... file 'blx-dm.def' found.
 
@@ -711,74 +748,74 @@ Package biblatex Info: Trying to load biblatex style data model...
 Package biblatex Info: ... file 'numeric.dbx' not found.
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
-\c@afterword=\count360
-\c@savedafterword=\count361
-\c@annotator=\count362
-\c@savedannotator=\count363
-\c@author=\count364
-\c@savedauthor=\count365
-\c@bookauthor=\count366
-\c@savedbookauthor=\count367
-\c@commentator=\count368
-\c@savedcommentator=\count369
-\c@editor=\count370
-\c@savededitor=\count371
-\c@editora=\count372
-\c@savededitora=\count373
-\c@editorb=\count374
-\c@savededitorb=\count375
-\c@editorc=\count376
-\c@savededitorc=\count377
-\c@foreword=\count378
-\c@savedforeword=\count379
-\c@holder=\count380
-\c@savedholder=\count381
-\c@introduction=\count382
-\c@savedintroduction=\count383
-\c@namea=\count384
-\c@savednamea=\count385
-\c@nameb=\count386
-\c@savednameb=\count387
-\c@namec=\count388
-\c@savednamec=\count389
-\c@translator=\count390
-\c@savedtranslator=\count391
-\c@shortauthor=\count392
-\c@savedshortauthor=\count393
-\c@shorteditor=\count394
-\c@savedshorteditor=\count395
-\c@labelname=\count396
-\c@savedlabelname=\count397
-\c@institution=\count398
-\c@savedinstitution=\count399
-\c@lista=\count400
-\c@savedlista=\count401
-\c@listb=\count402
-\c@savedlistb=\count403
-\c@listc=\count404
-\c@savedlistc=\count405
-\c@listd=\count406
-\c@savedlistd=\count407
-\c@liste=\count408
-\c@savedliste=\count409
-\c@listf=\count410
-\c@savedlistf=\count411
-\c@location=\count412
-\c@savedlocation=\count413
-\c@organization=\count414
-\c@savedorganization=\count415
-\c@origlocation=\count416
-\c@savedoriglocation=\count417
-\c@origpublisher=\count418
-\c@savedorigpublisher=\count419
-\c@publisher=\count420
-\c@savedpublisher=\count421
-\c@language=\count422
-\c@savedlanguage=\count423
-\c@origlanguage=\count424
-\c@savedoriglanguage=\count425
-\c@pageref=\count426
-\c@savedpageref=\count427
+\c@afterword=\count364
+\c@savedafterword=\count365
+\c@annotator=\count366
+\c@savedannotator=\count367
+\c@author=\count368
+\c@savedauthor=\count369
+\c@bookauthor=\count370
+\c@savedbookauthor=\count371
+\c@commentator=\count372
+\c@savedcommentator=\count373
+\c@editor=\count374
+\c@savededitor=\count375
+\c@editora=\count376
+\c@savededitora=\count377
+\c@editorb=\count378
+\c@savededitorb=\count379
+\c@editorc=\count380
+\c@savededitorc=\count381
+\c@foreword=\count382
+\c@savedforeword=\count383
+\c@holder=\count384
+\c@savedholder=\count385
+\c@introduction=\count386
+\c@savedintroduction=\count387
+\c@namea=\count388
+\c@savednamea=\count389
+\c@nameb=\count390
+\c@savednameb=\count391
+\c@namec=\count392
+\c@savednamec=\count393
+\c@translator=\count394
+\c@savedtranslator=\count395
+\c@shortauthor=\count396
+\c@savedshortauthor=\count397
+\c@shorteditor=\count398
+\c@savedshorteditor=\count399
+\c@labelname=\count400
+\c@savedlabelname=\count401
+\c@institution=\count402
+\c@savedinstitution=\count403
+\c@lista=\count404
+\c@savedlista=\count405
+\c@listb=\count406
+\c@savedlistb=\count407
+\c@listc=\count408
+\c@savedlistc=\count409
+\c@listd=\count410
+\c@savedlistd=\count411
+\c@liste=\count412
+\c@savedliste=\count413
+\c@listf=\count414
+\c@savedlistf=\count415
+\c@location=\count416
+\c@savedlocation=\count417
+\c@organization=\count418
+\c@savedorganization=\count419
+\c@origlocation=\count420
+\c@savedoriglocation=\count421
+\c@origpublisher=\count422
+\c@savedorigpublisher=\count423
+\c@publisher=\count424
+\c@savedpublisher=\count425
+\c@language=\count426
+\c@savedlanguage=\count427
+\c@origlanguage=\count428
+\c@savedoriglanguage=\count429
+\c@pageref=\count430
+\c@savedpageref=\count431
 \shorthandwidth=\skip62
 \shortjournalwidth=\skip63
 \shortserieswidth=\skip64
@@ -807,7 +844,7 @@ Package: expl3 2020-10-27 L3 programming layer (loader)
 (C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3b
 ackend-pdftex.def
 File: l3backend-pdftex.def 2020-09-24 L3 backend support: PDF output (pdfTeX)
-\l__kernel_color_stack_int=\count428
+\l__kernel_color_stack_int=\count432
 \l__pdf_internal_box=\box110
 ))
 Package biblatex Info: expl3
@@ -845,19 +882,19 @@ Package biblatex Info: ... file 'biblatex.def' found.
 (C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\bibl
 atex.def
 File: biblatex.def 2020/08/23 v3.15a biblatex compatibility (PK/MW)
-\c@textcitecount=\count429
-\c@textcitetotal=\count430
-\c@textcitemaxnames=\count431
-\c@biburlbigbreakpenalty=\count432
-\c@biburlbreakpenalty=\count433
-\c@biburlnumpenalty=\count434
-\c@biburlucpenalty=\count435
-\c@biburllcpenalty=\count436
+\c@textcitecount=\count433
+\c@textcitetotal=\count434
+\c@textcitemaxnames=\count435
+\c@biburlbigbreakpenalty=\count436
+\c@biburlbreakpenalty=\count437
+\c@biburlnumpenalty=\count438
+\c@biburlucpenalty=\count439
+\c@biburllcpenalty=\count440
 \biburlbigskip=\muskip18
 \biburlnumskip=\muskip19
 \biburlucskip=\muskip20
 \biburllcskip=\muskip21
-\c@smartand=\count437
+\c@smartand=\count441
 )
 Package biblatex Info: Trying to load bibliography style 'numeric'...
 Package biblatex Info: ... file 'numeric.bbx' found.
@@ -871,8 +908,8 @@ Package biblatex Info: ... file 'standard.bbx' found.
 (C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/bbx\
 standard.bbx
 File: standard.bbx 2020/08/23 v3.15a biblatex bibliography style (PK/MW)
-\c@bbx:relatedcount=\count438
-\c@bbx:relatedtotal=\count439
+\c@bbx:relatedcount=\count442
+\c@bbx:relatedtotal=\count443
 ))
 Package biblatex Info: Trying to load citation style 'numeric'...
 Package biblatex Info: ... file 'numeric.cbx' found.
@@ -899,39 +936,46 @@ Package biblatex Info: ... file 'biblatex.cfg' found.
 atex.cfg
 File: biblatex.cfg 
 ))
-\@quotelevel=\count440
-\@quotereset=\count441
- (report.aux)
+\@quotelevel=\count444
+\@quotereset=\count445
+ (report.aux
+
+LaTeX Warning: Label `fig:comb-a' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:comb-a' multiply defined.
+
+)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
 
 (C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\s
 upp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count442
-\scratchdimen=\dimen278
+\scratchcounter=\count446
+\scratchdimen=\dimen285
 \scratchbox=\box111
-\nofMPsegments=\count443
-\nofMParguments=\count444
+\nofMPsegments=\count447
+\nofMParguments=\count448
 \everyMPshowfont=\toks39
-\MPscratchCnt=\count445
-\MPscratchDim=\dimen279
-\MPnumerator=\count446
-\makeMPintoPDFobject=\count447
+\MPscratchCnt=\count449
+\MPscratchDim=\dimen286
+\MPnumerator=\count450
+\makeMPintoPDFobject=\count451
 \everyMPtoPDFconversion=\toks40
 )
 (C:\Users\LorenzoVainigli\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\
@@ -940,6 +984,8 @@ Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 85.
 )
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
 
@@ -958,8 +1004,8 @@ Package biblatex Info: Data encoding 'utf8' specified.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'report.bbl' found.
  (report.bbl)
-Package biblatex Info: Reference section=0 on input line 26.
-Package biblatex Info: Reference segment=0 on input line 26.
+Package biblatex Info: Reference section=0 on input line 27.
+Package biblatex Info: Reference segment=0 on input line 27.
  (report.toc [1
 
 {C:/Users/LorenzoVainigli/AppData/Local/MiKTeX/pdftex/config/pdftex.map}])
@@ -968,7 +1014,7 @@ Package biblatex Info: Reference segment=0 on input line 26.
 
  [2]
 Missing character: There is no ; in font nullfont!
- [3] [4] [5] [6] [7]
+ [3] [4] [5] [6] [7] [8]
 Underfull \hbox (badness 10000) in paragraph at lines 231--232
 
  []
@@ -978,13 +1024,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 233--234
 
  []
 
-[8]
+[9]
 Overfull \hbox (8.24225pt too wide) in paragraph at lines 243--244
 []\OT1/cmr/m/it/12 once-per-day \OT1/cmr/m/n/12 pro-ce-dures that are called ev
 -ery time the days counter
  []
 
-[9]
+[10]
 Overfull \hbox (80.9553pt too wide) in paragraph at lines 258--260
 \OT1/cmr/m/n/12 the prob-a-bil-ity that a per-son will move or not. If the vari
 -able \OT1/cmtt/m/n/12 lockdown-strinctness
@@ -995,88 +1041,88 @@ Underfull \hbox (badness 10000) in paragraph at lines 258--260
 
  []
 
-[10]
-<results/no_actions_population.png, id=49, 398.08725pt x 191.5155pt>
+[11]
+<results/no_actions_population.png, id=52, 398.08725pt x 191.5155pt>
 File: results/no_actions_population.png Graphic file (type png)
 <use results/no_actions_population.png>
 Package pdftex.def Info: results/no_actions_population.png  used on input line 
-275.
-(pdftex.def)             Requested size: 347.12354pt x 167.00578pt.
-<results/no_actions_degree_centrality.png, id=51, 395.67825pt x 192.11775pt>
+277.
+(pdftex.def)             Requested size: 312.40906pt x 150.30492pt.
+<results/no_actions_degree_centrality.png, id=54, 395.67825pt x 192.11775pt>
 File: results/no_actions_degree_centrality.png Graphic file (type png)
 <use results/no_actions_degree_centrality.png>
 Package pdftex.def Info: results/no_actions_degree_centrality.png  used on inpu
-t line 276.
-(pdftex.def)             Requested size: 347.12354pt x 168.55113pt.
- [11 <./results/no_actions_population.png> <./results/no_actions_degree_central
+t line 282.
+(pdftex.def)             Requested size: 312.40906pt x 151.69513pt.
+ [12 <./results/no_actions_population.png> <./results/no_actions_degree_central
 ity.png>]
-<results/quarantine_isolation_population.png, id=57, 392.667pt x 189.70876pt>
+<results/quarantine_isolation_population.png, id=60, 392.667pt x 189.70876pt>
 File: results/quarantine_isolation_population.png Graphic file (type png)
 <use results/quarantine_isolation_population.png>
 Package pdftex.def Info: results/quarantine_isolation_population.png  used on i
-nput line 292.
+nput line 306.
 (pdftex.def)             Requested size: 347.12354pt x 167.70842pt.
-<results/quarantine_isolation_degree_centrality.png, id=58, 393.26926pt x 190.9
+<results/quarantine_isolation_degree_centrality.png, id=61, 393.26926pt x 190.9
 1325pt>
 File: results/quarantine_isolation_degree_centrality.png Graphic file (type png
 )
 <use results/quarantine_isolation_degree_centrality.png>
 Package pdftex.def Info: results/quarantine_isolation_degree_centrality.png  us
-ed on input line 297.
+ed on input line 317.
 (pdftex.def)             Requested size: 347.12354pt x 168.51688pt.
-<results/social_distance_lockdown_population.png, id=59, 390.86024pt x 190.311p
+<results/social_distance_lockdown_population.png, id=62, 390.86024pt x 190.311p
 t>
 File: results/social_distance_lockdown_population.png Graphic file (type png)
 <use results/social_distance_lockdown_population.png>
 Package pdftex.def Info: results/social_distance_lockdown_population.png  used 
-on input line 314.
+on input line 343.
 (pdftex.def)             Requested size: 347.12354pt x 169.02196pt.
-<results/social_distance_lockdown_degree_centrality.png, id=60, 392.06474pt x 1
+<results/social_distance_lockdown_degree_centrality.png, id=63, 392.06474pt x 1
 90.91325pt>
 File: results/social_distance_lockdown_degree_centrality.png Graphic file (type
  png)
 <use results/social_distance_lockdown_degree_centrality.png>
 Package pdftex.def Info: results/social_distance_lockdown_degree_centrality.png
-  used on input line 321.
+  used on input line 356.
 (pdftex.def)             Requested size: 347.12354pt x 169.02959pt.
- [12 <./results/quarantine_isolation_population.png> <./results/quarantine_isol
-ation_degree_centrality.png>]
-<results/all_methods_population.png, id=67, 389.0535pt x 189.1065pt>
+<results/all_methods_population.png, id=64, 389.0535pt x 189.1065pt>
 File: results/all_methods_population.png Graphic file (type png)
 <use results/all_methods_population.png>
 Package pdftex.def Info: results/all_methods_population.png  used on input line
- 335.
+ 378.
 (pdftex.def)             Requested size: 347.12354pt x 168.73419pt.
-<results/all_methods_degree_centrality.png, id=68, 390.258pt x 189.1065pt>
+<results/all_methods_degree_centrality.png, id=65, 390.258pt x 189.1065pt>
 File: results/all_methods_degree_centrality.png Graphic file (type png)
 <use results/all_methods_degree_centrality.png>
 Package pdftex.def Info: results/all_methods_degree_centrality.png  used on inp
-ut line 344.
+ut line 393.
 (pdftex.def)             Requested size: 347.12354pt x 168.20615pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [13 <./results/social_distance_lockdown_population.png> <./results/social_dist
-ance_lockdown_degree_centrality.png>] [14 <./results/all_methods_population.png
-> <./results/all_methods_degree_centrality.png>]
-Overfull \hbox (4.12926pt too wide) in paragraph at lines 358--358
+ [13] [14 <./results/quarantine_isolation_population.png> <./results/quarantine
+_isolation_degree_centrality.png>] [15 <./results/social_distance_lockdown_popu
+lation.png> <./results/social_distance_lockdown_degree_centrality.png>] [16 <./
+results/all_methods_population.png> <./results/all_methods_degree_centrality.pn
+g>]
+Overfull \hbox (4.12926pt too wide) in paragraph at lines 407--407
 \OT1/cmr/m/it/12 Na-ture Medicine \OT1/cmr/m/n/12 26 (June 2020), pp. 1{6. \OT1
 /cmr/m/sc/12 doi\OT1/cmr/m/n/12 : $\OT1/cmtt/m/n/12 10 . 1038 / s41591 -[]
  []
 
-[15] (report.aux)
+[17] (report.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package logreq Info: Writing requests to 'report.run.xml'.
 \openout1 = `report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 20687 strings out of 479799
- 417522 string characters out of 2864972
- 879050 words of memory out of 3000000
- 37353 multiletter control sequences out of 15000+200000
+ 21990 strings out of 479799
+ 442951 string characters out of 2864972
+ 899973 words of memory out of 3000000
+ 38647 multiletter control sequences out of 15000+200000
  544207 words of font info for 62 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 108i,9n,111p,1853b,1320s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 108i,12n,111p,1853b,1320s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
 sfonts/cm/cmbx12.pfb><C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fo
 nts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/LorenzoVainigli/AppData/Local/
@@ -1090,15 +1136,15 @@ igli/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:
 /Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfont
 s/cm/cmmi9.pfb><C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/ty
 pe1/public/amsfonts/cm/cmr12.pfb><C:/Users/LorenzoVainigli/AppData/Local/Progra
-ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/LorenzoVainigli/App
+ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/LorenzoVainigli/App
 Data/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/Lo
 renzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy
 10.pfb><C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type1/publ
 ic/amsfonts/cm/cmti12.pfb><C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKT
 eX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on report.pdf (15 pages, 459698 bytes).
+Output written on report.pdf (17 pages, 462754 bytes).
 PDF statistics:
- 131 PDF objects out of 1000 (max. 8388607)
+ 137 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  53 words of extra memory for PDF output out of 10000 (max. 10000000)
 
