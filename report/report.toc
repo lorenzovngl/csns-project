@@ -4,74 +4,60 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1}Introduction}{2}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2}Preliminaries}{3}{}%
+\contentsline {section}{\numberline {2}Preliminaries}{2}{}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {3}Modeling}{3}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1}The SIS model}{3}{}%
+\contentsline {subsection}{\numberline {3.1}The SEIQJS model}{3}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{New classes}{3}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{New variables}{3}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.2}The SEIS model}{4}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{New classes}{4}{}%
+\contentsline {paragraph}{\textbf {No immunity provided}}{4}{}%
 \defcounter {refsection}{0}\relax 
 \contentsline {paragraph}{New variables}{4}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{\textbf {No immunity provided}}{5}{}%
+\contentsline {subsection}{\numberline {3.2}Action to limit the epidemic spread}{5}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3}The SEIQJS model}{5}{}%
+\contentsline {subsection}{\numberline {3.3}Contact tracing and evaluation method}{6}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{New classes}{5}{}%
+\contentsline {section}{\numberline {4}Implementation}{6}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{New variables}{5}{}%
+\contentsline {subsection}{\numberline {4.1}The base model}{6}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.4}Action to limit the epidemic spread}{6}{}%
+\contentsline {subsection}{\numberline {4.2}Parameters}{6}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.5}Contact tracing and evaluation method}{7}{}%
+\contentsline {paragraph}{Fixed parameters}{7}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Implementation}{7}{}%
+\contentsline {paragraph}{Control parameters}{7}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}The base model}{7}{}%
+\contentsline {subsection}{\numberline {4.3}Class representation}{7}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.2}Parameters}{8}{}%
+\contentsline {subsection}{\numberline {4.4}Class transitions methods}{7}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Fixed parameters}{8}{}%
+\contentsline {subsection}{\numberline {4.5}Core procedures: setup and go}{8}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Control parameters}{8}{}%
+\contentsline {paragraph}{The procedure \texttt {setup}}{8}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.3}Class representation}{8}{}%
+\contentsline {paragraph}{The procedure \texttt {go}}{8}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.4}Class transitions methods}{9}{}%
+\contentsline {subsection}{\numberline {4.6}Virus propagation}{9}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.5}Core procedures: setup and go}{9}{}%
+\contentsline {subsection}{\numberline {4.7}Contact tracing}{9}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{The procedure \texttt {setup}}{9}{}%
+\contentsline {subsection}{\numberline {4.8}Social distance and lockdown}{9}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{The procedure \texttt {go}}{10}{}%
+\contentsline {paragraph}{Social distance}{9}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.6}Virus propagation}{10}{}%
+\contentsline {paragraph}{Lockdown}{10}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.7}Contact tracing}{10}{}%
+\contentsline {subsection}{\numberline {4.9}Evaluation}{10}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.8}Social distance and lockdown}{10}{}%
+\contentsline {section}{\numberline {5}Results}{10}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Social distance}{11}{}%
+\contentsline {subsection}{\numberline {5.1}Virus diffusion without actions}{10}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{Lockdown}{11}{}%
+\contentsline {subsection}{\numberline {5.2}Using only quarantine and isolation}{11}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.9}Evaluation}{11}{}%
+\contentsline {subsection}{\numberline {5.3}Using only social distance and lockdown}{12}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5}Results}{11}{}%
+\contentsline {subsection}{\numberline {5.4}Combining quarantine and isolation with social distance and lockdown}{12}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.1}Virus diffusion without actions}{12}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.2}Using only quarantine and isolation}{13}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.3}Using only social distance and lockdown}{13}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.4}Combining quarantine and isolation with social distance and lockdown}{13}{}%
-\defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6}Conclusions}{17}{}%
+\contentsline {section}{\numberline {6}Conclusions}{16}{}%
