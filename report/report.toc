@@ -8,11 +8,11 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {3}Modeling}{3}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1}The SEIQJS model}{3}{}%
+\contentsline {subsection}{\numberline {3.1}The SEIQJSD model}{3}{}%
 \defcounter {refsection}{0}\relax 
 \contentsline {paragraph}{\textbf {No immunity provided}}{4}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {paragraph}{New variables}{4}{}%
+\contentsline {paragraph}{Variables}{4}{}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.2}Action to limit the epidemic spread}{5}{}%
 \defcounter {refsection}{0}\relax 

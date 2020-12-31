@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.11) (preloaded format=pdflatex 2020.11.11)  31 DEC 2020 13:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.11) (preloaded format=pdflatex 2020.11.11)  31 DEC 2020 16:54
 entering extended mode
 **./report.tex
 (report.tex
@@ -1017,11 +1017,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 62--66
 
  []
 
-[4]
-Underfull \vbox (badness 2556) has occurred while \output is active []
 
- [5]
-[6] [7]
+Overfull \hbox (4.98538pt too wide) in paragraph at lines 115--116
+ [][] 
+ []
+
+[4] [5] [6] [7]
 Underfull \hbox (badness 10000) in paragraph at lines 197--198
 
  []
@@ -1114,7 +1115,7 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 Here is how much of TeX's memory you used:
  22019 strings out of 479799
  443412 string characters out of 2864972
- 900989 words of memory out of 3000000
+ 901989 words of memory out of 3000000
  38676 multiletter control sequences out of 15000+200000
  544207 words of font info for 62 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1139,7 +1140,7 @@ renzoVainigli/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy
 ic/amsfonts/cm/cmsy9.pfb><C:/Users/LorenzoVainigli/AppData/Local/Programs/MiKTe
 X/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/LorenzoVainigli/AppData/L
 ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on report.pdf (16 pages, 472263 bytes).
+Output written on report.pdf (16 pages, 472628 bytes).
 PDF statistics:
  138 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

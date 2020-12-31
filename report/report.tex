@@ -51,7 +51,7 @@ In this project, the modelling phase started from the \textit{SEIQJR} model show
 In this section we will explain the process of building the model that will be implemented to realize this project.\\
 We start from the scheme of the \textit{SEIQJS} model, explaining why this model is the one we need for our purpose and then we conclude this section explaining how to model contact tracing, social-distance and lockdown.
 
-\subsection{The SEIQJS model}
+\subsection{The SEIQJSD model}
 Before showing the diagram of the model that we will use, let's see how it was constructed.\\
 The \textit{SIS} model is the simplest model in which there is a class of susceptible people ($S$) that, if one get the infection, goes to the infected class ($I$). Then, when infected people get recovered they returned to the susceptible class.
 As we know, SARS-CoV-2 infection leads an incubation period during which the infected person don't have symptoms but can transmit the infection to other people. We introduce an exposed class $E$ in which we put people that had have a contact with infected people and may be infected in an asymptomatic status.
@@ -73,7 +73,7 @@ Beacuse of the unknown properties of immunity from SARS-CoV-2, we can assume tha
 \end{itemize}
 \end{multicols}
 
-\paragraph{New variables}
+\paragraph{Variables}
 \begin{itemize}
 \item $a$ = infection rate;
 \item $\varepsilon_E$ = probability that a person exposed (in $E$) transmit the infection, exposed-transmission-factor;
@@ -93,7 +93,7 @@ The diagram of the model is shown in fig. \ref{fig:model} and the equations are 
 \begin{figure}
 	\centering
     \begin{tikzpicture}
-    \node[draw] at (0,0) (S) {\Large $S$};
+    \node[draw] at (-0.5,0) (S) {\Large $S$};
     \node[draw] at (5,1) (E) {\Large $E$};
     \node[draw] at (5,-1) (Q) {\Large $Q$};
     \node[draw] at (7,1) (I) {\Large $I$};
@@ -101,26 +101,26 @@ The diagram of the model is shown in fig. \ref{fig:model} and the equations are 
     \node[draw] at (10.5,0) (D) {\Large $D$};
     \node[draw,circle,minimum size=3pt] at (9,1) (Ib) {};
     \node[draw,circle,minimum size=3pt] at (9,-1) (Jb) {};
-    \draw[draw, -latex] (S.north) |- (E.west) node [midway,xshift=2cm,above] {$aS(\varepsilon_EE + \varepsilon_E\varepsilon_QQ + \varepsilon_JJ)$};
+    \draw[draw, -latex] (S.north) |- (E.west) node [midway,xshift=2.5cm,above] {$aS(\varepsilon_EE + \varepsilon_E\varepsilon_QQ + \varepsilon_JJ + I)$};
     \draw[draw, -latex] (E.south) -- (Q.north) node [midway,left] {$c_QE$};
     \draw[draw, -latex] (E.east) -- (I.west) node [midway,above] {$k_EE$};
     \draw[draw, -latex] (I.south) -- (J.north) node [midway,left] {$c_JI$};
     \draw[draw, -latex] (Q.east) -- (J.west) node [midway,above] {$k_QQ$};
     \draw[draw, -latex] (I.east) -- (Ib.west) node [midway,above] {$b_II$};
     \draw[draw, -latex] (J.east) -- (Jb.west) node [midway,above] {$b_JJ$};
-    \draw[draw, -latex] (Ib.north) |- ($(I.east)+(0.5,1)$) -- ($(S.west)+(-0.5,2)$) node [midway,above] {$r_I$} |- ($(S.west)+(0,0.1)$);
-    \draw[draw, -latex] (Jb.south) |- ($(J.east)+(0.5,-1)$) -- ($(S.west)-(0.5,2)$) node [midway,above] {$r_J$} |- ($(S.west)-(0,0.1)$);
+    \draw[draw, -latex] (Ib.north) |- ($(I.east)+(0.5,1)$) -- ($(S.west)+(-0.5,2)$) node [midway,xshift=0.5cm,above] {$r_I$} |- ($(S.west)+(0,0.1)$);
+    \draw[draw, -latex] (Jb.south) |- ($(J.east)+(0.5,-1)$) -- ($(S.west)-(0.5,2)$) node [midway,xshift=0.5cm,above] {$r_J$} |- ($(S.west)-(0,0.1)$);
     \draw[draw, -latex] (Ib.east) -| (D.north) node [midway,above] {$1-r_I$};
     \draw[draw, -latex] (Jb.east) -| (D.south) node [midway,below] {$1-r_J$};
     \end{tikzpicture}
-    \caption{Diagram of the SEIQJS model}
+    \caption{Diagram of the \textit{SEIQJSD} model.}
     \label{fig:model}
 \end{figure}
 
 \begin{equation}
 \begin{aligned}
-&\frac{dS}{dt} = -aS(\varepsilon_EE + \varepsilon_E\varepsilon_QQ + \varepsilon_JJ) + b_Ir_II + b_Jr_JJ\\
-&\frac{dE}{dt} = aS(\varepsilon_EE + \varepsilon_E\varepsilon_QQ + \varepsilon_JJ) - (k_E + c_Q)E\\
+&\frac{dS}{dt} = -aS(\varepsilon_EE + \varepsilon_E\varepsilon_QQ + \varepsilon_JJ + I) + b_Ir_II + b_Jr_JJ\\
+&\frac{dE}{dt} = aS(\varepsilon_EE + \varepsilon_E\varepsilon_QQ + \varepsilon_JJ + I) - (k_E + c_Q)E\\
 &\frac{dQ}{dt} = c_QE - k_QQ\\
 &\frac{dI}{dt} = k_EE - (b_I + c_J)I\\
 &\frac{dJ}{dt} = k_QQ + c_JI - b_JJ\\
@@ -290,7 +290,7 @@ Let's see how using quarantine and isolation will change the virus diffusion and
 \subsection{Using only social distance and lockdown}
 Before combining all the control measures available, let's see the impact of social distance and lockdown. In the graph of population in fig. \ref{fig:dist-lock-a} the effect is not particularly noticeable, but as we can see in fig. \ref{fig:dist-lock-b} there is an immediate drop of the number of contacts when social distance is activated. A similar thing happend with the activation of lockdown. Simulation is carried out with these settings:
 \begin{itemize}
-\item \texttt{social-distance-perfection} = 70
+\item \texttt{social-distance-perfection} = 80
 \item \texttt{lockdown-strictness} = 90
 \end{itemize}
 

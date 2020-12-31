@@ -27,14 +27,15 @@ contacts-own [
 ]
 
 globals [
-  chance-reproduce
-  days
+  chance-reproduce                 ; probability that a person reproduces per tick
+  days                             ; counter of days elapsed
   ticks-per-day
   avg-degree-centrality
   std-dev-degree-centrality
-  deaths
-  time-limited-computation?
-  days-limit
+  deaths                           ; counter of people dead
+  time-limited-computation?        ; true if we want to stop the simulation after X days, otherwise false
+  days-limit                       ; simulation stops while days reaches this value
+  contact-max-age                  ; contact link max age (days) before remove the link
 
   ; Fixed parameters of the model
   infection-rate                  ; a
@@ -50,17 +51,19 @@ globals [
 to reset
   set number-people 150
 
-  set quarantine-perfection-rate 70
-  set quarantines-per-day-rate 50
-
-  set isolation-perfection-rate 90
-  set isolations-per-day-rate 50
-
+  ; Control parameters of the model
+  set quarantine-and-isolation false
+  set quarantine-perfection 70
+  set quarantines-per-day-rate 10
+  set isolation-perfection 90
+  set isolations-per-day-rate 10
   set social-distance false
-  set social-distance-perfection-rate 80
-  set lockdown-strictness 0
+  set social-distance-perfection 80
+  set lockdown false
+  set lockdown-strictness 90
 
-  set contact-time 14
+  set show-contacts true
+  set contact-max-age 14
 end
 
 to setup
@@ -104,11 +107,12 @@ to setup-turtles
     set size 1.5
   ]
 
+  ; let the epidemic start to spread
   ask n-of 10 people [
     get-exposed
   ]
   ask n-of 2 people with [ exposed? ] [
-    set has_changed_class false
+    set has_changed_class false          ; avoid the check only for setup
     get-infected
   ]
 end
@@ -118,7 +122,13 @@ to go
   ; once-per-tick actions
   ask people [
     set has_changed_class false
-    move
+
+    if not quarantined? and not isolated? [
+      if not lockdown or (lockdown and random-float 100 > lockdown-strictness) [
+        move
+      ]
+    ]
+
     infect
     update-contacts
   ]
@@ -128,7 +138,7 @@ to go
     ask people [
       ifelse susceptible? [
         if random-float 100 < chance-reproduce [
-          hatch 1
+          hatch 1      ; the person reproduces
         ]
       ] [
         ifelse exposed? [
@@ -151,6 +161,7 @@ to go
       ]
 
       if quarantine-and-isolation [
+        ; use quarantine and isolation
         isolate-infected
         isolate-quarantined
         quarantine-exposed
@@ -172,17 +183,17 @@ to go
 
     update-metrics
     set days days + 1
-    update-plots
+    update-plots          ; update plots not every tick, but every day
   ]
 
   update-display
-  tick-advance 1
+  tick-advance 1          ; prevent the update of the plots at every tick
 end
 
 to get-exposed ;; turtle procedure
   if not has_changed_class [
     if not susceptible? [
-      show "Only susceptible people can become exposed"
+      show "Only susceptible people can become exposed."
       error -1
     ]
     set susceptible? false
@@ -194,7 +205,7 @@ end
 to get-quarantined ;; turtle procedure
   if not has_changed_class [
     if not exposed? [
-      show "Only exposed people can become quarantined"
+      show "Only exposed people can become quarantined."
       error -1
     ]
     set exposed? false
@@ -206,7 +217,7 @@ end
 to get-infected ;; turtle procedure
   if not has_changed_class [
     if not exposed? [
-      show "Only exposed people can become infected"
+      show "Only exposed people can become infected."
       error -1
     ]
     set exposed? false
@@ -218,7 +229,7 @@ end
 to get-isolated ;; turtle procedure
   if not has_changed_class [
     if not infected? and not quarantined? [
-      show "Only infected and quarantined people can become isolated"
+      show "Only infected and quarantined people can become isolated."
       error -1
     ]
     set quarantined? false
@@ -231,7 +242,7 @@ end
 to get-recovered-or-dead ;; turtle procedure
   if not has_changed_class [
     if not infected? and not isolated? [
-      show "Only infected or isolated people can become recovered"
+      show "Only infected or isolated people can recover or die."
       error -1
     ]
     ifelse infected? [
@@ -244,6 +255,7 @@ to get-recovered-or-dead ;; turtle procedure
         die
       ]
     ] [
+     ; case where the person is isolated
      ifelse random-float 100 < isolated-chance-recover [
         set isolated? false
         set susceptible? true
@@ -256,6 +268,7 @@ to get-recovered-or-dead ;; turtle procedure
   ]
 end
 
+;; Quarantine a part of exposed people
 to quarantine-exposed
   let max-quarantines-per-time count people with [exposed? and not quarantined? ] * quarantines-per-day-rate / 100
   let counter 0
@@ -267,6 +280,7 @@ to quarantine-exposed
   ]
 end
 
+;; Isolate a part of infected people
 to isolate-infected
   let max-isolate-per-time count people with [infected? and not isolated? ] * isolations-per-day-rate / 100
   let counter 0
@@ -278,6 +292,7 @@ to isolate-infected
   ]
 end
 
+;; Isolate a part of quarantined people
 to isolate-quarantined
   let max-isolations-per-time count people with [ quarantined? and not isolated? ] * quarantined-to-isolated-rate / 100
   let counter 0
@@ -289,6 +304,7 @@ to isolate-quarantined
   ]
 end
 
+;; Compute average degree centrality and its standard deviation
 to update-metrics
   let sum-degree-centrality 0
   let sum-std-dev-degree-centrality 0
@@ -303,12 +319,14 @@ to update-metrics
   set std-dev-degree-centrality sqrt (sum-std-dev-degree-centrality / count people)
 end
 
+; create new links examining actual contacts
 to update-contacts
   create-contacts-with other people-here [
     set contact-age 0
   ]
 end
 
+;; Visualize agents based on the turtle-color setting
 to update-display
   let maxdc (max [degree-centrality] of people)
   ask people [
@@ -345,25 +363,23 @@ to move ;; turtle procedure
   rt random 100
   lt random 100
 
-  if not quarantined? and not isolated? [
-    if not lockdown or (lockdown and random-float 100 > lockdown-strictness) [
-      ifelse not social-distance [
-        fd 1
-      ] [
-        let busy-patch false
-        ask patch-ahead 1 [
-          if count people-here > 0 [ set busy-patch true ]
-        ]
-        if not busy-patch or random-float 100 > social-distance-perfection-rate [
-          fd 1
-        ]
+  ifelse not social-distance [
+    fd 1
+  ] [
+    let busy-patch false
+    ask patch-ahead 1 [
+      if count people-here > 0 [
+        set busy-patch true
       ]
+    ]
+    ; avoid to move to a patch if there is already another person, but with a margin of error
+    if not busy-patch or random-float 100 > social-distance-perfection [
+      fd 1
     ]
   ]
 end
 
-;; If a turtle is sick, it infects other turtles on the same patch.
-;; Immune turtles don't get sick.
+;; If a turtle is exposed, quarantined, infected or isolated, it infects other turtles on the same patch.
 to infect ;; turtle procedure
   ifelse exposed? [
     ask other people-here with [ susceptible? ] [
@@ -374,18 +390,19 @@ to infect ;; turtle procedure
   ] [
     ifelse quarantined? [
       ask other people-here with [ susceptible? ] [
-        if random-float 100 <  infection-rate * exposed-transmission-factor * (1 - quarantine-perfection-rate) [
+        if random-float 100 <  infection-rate * exposed-transmission-factor * (1 - quarantine-perfection) [
           get-exposed
         ]
       ]
     ] [
       ifelse isolated? [
         ask other people-here with [ susceptible? ] [
-          if random-float 100 <  infection-rate * (1 - isolation-perfection-rate) [
+          if random-float 100 <  infection-rate * (1 - isolation-perfection) [
             get-exposed
           ]
         ]
       ] [
+        ; case where the person is infected
         ask other people-here with [ susceptible? ] [
           if random-float 100 < infection-rate [
             get-exposed
@@ -627,7 +644,7 @@ SWITCH
 378
 social-distance
 social-distance
-0
+1
 1
 -1000
 
@@ -636,8 +653,8 @@ SLIDER
 380
 260
 413
-social-distance-perfection-rate
-social-distance-perfection-rate
+social-distance-perfection
+social-distance-perfection
 0
 100
 80.0
@@ -651,8 +668,8 @@ SLIDER
 185
 260
 218
-quarantine-perfection-rate
-quarantine-perfection-rate
+quarantine-perfection
+quarantine-perfection
 0
 100
 70.0
@@ -666,8 +683,8 @@ SLIDER
 260
 260
 293
-isolation-perfection-rate
-isolation-perfection-rate
+isolation-perfection
+isolation-perfection
 0
 100
 90.0
@@ -852,7 +869,7 @@ SWITCH
 548
 show-contacts
 show-contacts
-1
+0
 1
 -1000
 
@@ -863,7 +880,7 @@ SWITCH
 178
 quarantine-and-isolation
 quarantine-and-isolation
-0
+1
 1
 -1000
 
@@ -885,7 +902,7 @@ SWITCH
 468
 lockdown
 lockdown
-0
+1
 1
 -1000
 
