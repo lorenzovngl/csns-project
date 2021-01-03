@@ -45,7 +45,7 @@ Once we have found a setting of parameters that causes, more or less, the same e
 
 \section{Preliminaries}
 The literature about virus diffusion is very rich because 2020 has been a year in which the researchers need to discover everything about the new SARS-CoV-2 virus and the COVID-19 disease \cite{singhal}. Models to represent situations like this or other diseases like flu were developed by Brauer et al. \cite{brauer}; one of these, the \textit{SEIQRJ} model, is suitable to study the SARS-CoV-2 pandemic. An article from Giordano et al. explains how to model the intervetions in the population to fight the COVID-19 outbreak \cite{giordano}, but it's too complex for the purposes of this project. The Netlogo \cite{netlogo} models library offers an implementation of the \textit{SIR} model \cite{netlogo-virus}: it's very simple and it's a good point to start the implementation of our model.\\ 
-In this project, the modelling phase started from the \textit{SEIQJR} model shown by by Brauer et al. and the implementation phase started from the Virus model from the NetLogo library.
+In this project, the modeling phase started from the \textit{SEIQJR} model shown by by Brauer et al. and the implementation phase started from the Virus model from the NetLogo library.
 
 \section{Modeling}
 In this section we will explain the process of building the model that will be implemented to realize this project.\\
@@ -53,13 +53,13 @@ We start from the scheme of the \textit{SEIQJS} model, explaining why this model
 
 \subsection{The SEIQJSD model}
 Before showing the diagram of the model that we will use, let's see how it was constructed.\\
-The \textit{SIS} model is the simplest model in which there is a class of susceptible people ($S$) that, if one get the infection, goes to the infected class ($I$). Then, when infected people get recovered they returned to the susceptible class.
+The \textit{SIS} model is the simplest model in which there is a class of susceptible people ($S$) that, if one get the infection, goes to the infected class ($I$). Then, when infected people get recovered they return to the susceptible class or die.
 As we know, SARS-CoV-2 infection leads an incubation period during which the infected person don't have symptoms but can transmit the infection to other people. We introduce an exposed class $E$ in which we put people that had have a contact with infected people and may be infected in an asymptomatic status.
 Due to the unavailability of a vaccine, to fight SARS-CoV-2 infected people are quarantined or isolated (or, also, hospitalized). As suggested from the \textit{SEIQJR} model, two classes were added: $Q$ is the class of quarantined people, i.e. the exposed people belong to the class $E$; $J$ is the class for isolate infected people of class $I$. So basically $Q$ is for $E$ what $J$ is for $I$, with the only difference that there is a flow from $Q$ to $J$ but not vice versa.\\
-People isolated (i.e. belong to class $J$) can recover as people belong to class $I$. Finally, a class $D$ is added where dead people go.
+People isolated (i.e. belong to class $J$) can recover as people belong to class $I$. Finally, a class $D$ is added where dead people are counted.
 
 \paragraph{\textbf{No immunity provided}}
-Beacuse of the unknown properties of immunity from SARS-CoV-2, we can assume that the S class and R class coincide, creating a cycle that causes the comeback of the recoverd individuals in the susceptible class, if they don't die.
+Beacuse of the unknown properties of immunity from SARS-CoV-2, we can assume that the S class and R class coincide, creating a cycle that causes the comeback of the recovered individuals in the susceptible class, if they don't die.
 \\\\
 \textit{Classes}
 \begin{multicols}{3}
@@ -76,9 +76,9 @@ Beacuse of the unknown properties of immunity from SARS-CoV-2, we can assume tha
 \paragraph{Variables}
 \begin{itemize}
 \item $a$ = infection rate;
-\item $\varepsilon_E$ = probability that a person exposed (in $E$) transmit the infection, exposed-transmission-factor;
-\item $\varepsilon_Q$ = probability that a person quarantined (in $Q$) make a contact, quarantined-contact-factor;
-\item $\varepsilon_J$ = probability that a person isolated (in $J$) transmit the infection, isolation-transmission-factor;
+\item $\varepsilon_E$ = probability that a person exposed (in $E$) transmits the infection;
+\item $\varepsilon_Q$ = probability that a person quarantined (in $Q$) makes a contact;
+\item $\varepsilon_J$ = probability that a person isolated (in $J$) transmits the infection;
 \item $k_E$ = probability that exposed people become infective;
 \item $k_Q$ = probability that quarantined people are isolated;
 \item $c_Q$ = percentage of exposed people that are quarantined at each time step;
@@ -140,7 +140,7 @@ As we know that SARS-CoV-2 infection leads to an asymptomatic status, a contact 
 In this section we describe the way we implemented the concepts shown in the previous section.
 
 \subsection{The base model}
-The Virus model from the NetLogo library \cite{netlogo-virus} is the point from which we started the development of our model. The Virus model is an implementation of the \textit{SIR} model, with some peculiarities:
+The Virus model from the NetLogo library is the point from which we started the development of our model. The Virus model is an implementation of the \textit{SIR} model, with some peculiarities:
 \begin{enumerate}
 \item people can reproduce;
 \item people can recover from the infection but they can also die;
@@ -149,7 +149,7 @@ The Virus model from the NetLogo library \cite{netlogo-virus} is the point from 
 As previously stated, we conclude that immunity is not a characteristic that we want to have in our final model, so we remove the class of immune people, but we keep the behavior of reproduction and death.
 
 \subsection{Parameters}
-The parameters of the model are the ones described for the \textit{SEIQJS} model, divided into \textit{fixed parameters}, i.e. the ones that are specific to the virus and that we cannot change, and the \textit{control parameters}, which can be tuned in order to study attempts to manage the epidemic.
+The parameters of the model are the ones described for the \textit{SEIQJSD} model, divided into \textit{fixed parameters}, i.e. the ones that are specific to the virus and that we cannot change, and the \textit{control parameters}, which can be tuned in order to study attempts to manage the epidemic.
 
 \paragraph{Fixed parameters}
 \begin{itemize}
@@ -172,8 +172,8 @@ The parameters of the model are the ones described for the \textit{SEIQJS} model
 \item \texttt{social-distance-perfection};
 \item \texttt{lockdown-strictness}.
 \end{itemize}
-The last two parameters, even if they are not part of the \textit{SEIQJS} model, are used to manage the epidemic.\\
-Experiments with this model are made by trying different values for control parameters, while fixed parameters remain unchanged.
+The last two parameters, even if they are not part of the \textit{SEIQJSD} model, are used to manage the epidemic.\\
+Experiments with this model must be done by trying different values for control parameters, while fixed parameters remain unchanged.
 
 \subsection{Class representation}
 The \textit{SEIS}, \textit{SEIQJR} and other similar diagrams have a fundamental constraint: at each time step, a person of the population (i.e. an agent) must belong to one and only one class. This is done by simply add five properities to the agent: one of each indicates a different class, so at each time step, one of these property must be \texttt{true} and the others \texttt{false}. This fact does not apply to the class of dead people, beacuse it is a class without exit: if a person dies, the agent is killed and the deadth counter increased by one.
@@ -185,7 +185,7 @@ To make possible that a person change class a series of methods were implemented
 \item put to \texttt{false} the properties of the person that could hold the value \texttt{true};
 \item put to \texttt{true} the property that indicates the new class.
 \end{enumerate}
-These methods are \texttt{get-exposed}, \texttt{get-quarantined}, \texttt{get-infected}, \texttt{get-isolated} and \texttt{get-recovered}.
+These methods are \texttt{get-exposed}, \texttt{get-quarantined}, \texttt{get-infected}, \texttt{get-isolated} and \texttt{get-recovered-or-dead}.
 
 \subsection{Core procedures: setup and go}
 Every NetLogo model is based on these two procedures:
@@ -194,9 +194,9 @@ Every NetLogo model is based on these two procedures:
 \item \texttt{go} is the function that will be executed every time step (tick).
 \end{itemize}
 
-\paragraph{The procedure \texttt{setup}} creates the turtles that represent the population and initialize their properties: every turtle is putted in the susceptible class. To create the beginning of virus spreading, after these actions some of the created turtles are picked at random and moved to the exposed class and to the infected class.\\
+\paragraph{The procedure \texttt{setup}} creates the turtles that represent the population and initializes their properties: every turtle is put in the susceptible class. To create the beginning of virus spreading, after these actions some of the created turtles are picked at random and moved to the exposed class and to the infected class.\\
 
-To understand the explaination of the following procedure \texttt{go} we need to underline first a design choice: we decided to let that some actions occurs more often that others, below I explain which they are and why. To implement this behaviour we used a new variable that counts the days elapsed from the beginning of the simulation, every time \texttt{ticks} is a multiplier of \texttt{ticks-per-days}, days counter advances by one.\\
+To understand the explaination of the following procedure \texttt{go} we need to underline first a design choice: we decided to ensure that some actions occurs more often that others, below we explain which they are and why. To implement this behaviour we used a new variable that counts the days elapsed from the beginning of the simulation, every time \texttt{ticks} is a multiplier of \texttt{ticks-per-days}, days counter advances by one.\\
 Why this design choice? Every tick people make a single move, so it's strange that the mechanism of quarantine and isolate people occurs with the same frequency. Distinction between \texttt{ticks} and \texttt{days} makes the simulation more realistic.
 
 \paragraph{The procedure \texttt{go}} calls various other procedures that carried on the simulation and the behaviour of the model, but they are divided into two groups:
@@ -214,29 +214,29 @@ Why this design choice? Every tick people make a single move, so it's strange th
 \end{itemize}
 
 \subsection{Virus propagation}
-The infection spreading of the virus in the population is implemented in the function \texttt{infect} that looks a little bit complicated but, essentialy, uses the parameters of the model to call, in a proper way, the procedure \texttt{get\_exposed}. It's the only procedure that makes call to \texttt{get\_exposed}. Take a look to the comments in the code of the model to know more.
+The infection spreading of the virus in the population is implemented in the procedure \texttt{infect} that looks a little bit complicated but, essentialy, uses the parameters of the model to call, in a proper way, the procedure \texttt{get\_exposed}. It's the only procedure that makes call to \texttt{get\_exposed}. Take a look to the comments in the code of the model to know more.
 
 \subsection{Contact tracing}
 Contact tracing is implemented using the construct \texttt{link} of NetLogo. At each time step, the program asks to each person to create a link with other people that share, in that moment, the same patch. Basically is the same way that the virus spreads and it has a sense beacuse the aim of contact tracing is to track the propagation of the virus. The result is a graph connecting people to each others.
 
 \subsection{Social distance and lockdown}
 Two methods were implemented to control people movement in order to reduce contacts between them: social distance and lockdown
-\paragraph{Social distance} can be enabled or disabled in this model and uses an auxiliry parameter called \texttt{social-distance-perfection}. If social distance is disabled, people are free to move everywhere, while if it's enabled people avoid to move to a patch that is already occupied by others with an error probability of determined by $1 - \textrm{\texttt{social-distance-perfection}}$.
+\paragraph{Social distance} can be enabled or disabled in this model and uses an auxiliry parameter called \texttt{social-distance-perfection}. If social distance is disabled, people are free to move everywhere, while if it's enabled people avoid to move to a patch that is already occupied by others, but with an error probability determined by $1 - \textrm{\texttt{social-distance-perfection}}$.
 \paragraph{Lockdown} is implemented taking into account a value that defines the probability that a person will move or not. \\
-If the variable \texttt{lockdown-strinctness} is set to zero, people are completely free to move, while if the value increases, people will make a move with less probability. If a person doesn't move, it remain in the same patch where it was previously.\\ \\
+If the variable \texttt{lockdown-strinctness} is set to zero, people are completely free to move, while if the value increases, people will make a move with less probability. If a person doesn't move, it remains in the same patch where it was previously.\\ \\
 Take a look to the procedure \texttt{move} to find the code about these control measures.
 
 \subsection{Evaluation}
-In this model we considered to evaluate every situation analyzing the graph generated by the contact tracing method. The more connected is the graph, the more powerful is the virus spreading and so, in a real situation, the more stressed the health system will be.\\
+In this model we considered to evaluate every situation mainly analyzing the graph generated by the contact tracing method. The more connected is the graph, the more powerful is the virus spreading and so, in a real situation, the more stressed the health system will be.\\
 We use the definition of \textit{degree centrality} to have a clear indicator of the connections that each person creates during simulation. Beacause of degree centrality is a node-based measure, we used the average of all the degree centralities to get a value to evaluate the entire graph. An auxiliary indicator of standard deviation for this average is provided. \\
 If a control action on the population reduces the value of \textit{average degree centrality}, it means that the action is effective.
 
 \section{Results}\label{results}
-In this section we describe the results obtained making simulations with this model. Differences between simulations are about watch how the simulation evolves with different actions.\\
+In this section we describe the results obtained making simulations with this model.\\
 The size of the population at the beginning of the simulations is fixed at 150 and the duration of the simulations is 365 days.
 
 \subsection{Virus diffusion without actions}
-The first thing to do to have an idea of what happens is to watch the behavior of the model if nothing action to fight the virus is taken. As we can see in fig. \ref{fig:noactions-a} the lethality of the virus makes an unacceptable impact on the population, reducing it to few individuals. The reduction of the \textit{average degree centrality} (fig. \ref{fig:noactions-b}) is only due to the decrease of the population.
+The first thing to do to have an idea of what happens is to watch the behavior of the model if no action to fight the virus is taken. As we can see in fig. \ref{fig:noactions-a} the lethality of the virus makes an unacceptable impact on the population, reducing it to few individuals. The reduction of the \textit{average degree centrality} (fig. \ref{fig:noactions-b}) is only due to the decrease of the population.
 
 \begin{figure}
 	\begin{subfigure}{\textwidth}
